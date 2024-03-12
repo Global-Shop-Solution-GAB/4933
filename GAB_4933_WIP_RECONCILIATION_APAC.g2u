@@ -1,0 +1,2147 @@
+﻿Program.Sub.ScreenSU.Start
+Gui.F_Recon..Create
+Gui.F_Recon..Caption("Work in Process Reconciliation [APAC]")
+Gui.F_Recon..Size(13365,9585)
+Gui.F_Recon..MinX(0)
+Gui.F_Recon..MinY(0)
+Gui.F_Recon..Position(0,0)
+Gui.F_Recon..FontSize(9)
+Gui.F_Recon..BackColor(-2147483633)
+Gui.F_Recon..MousePointer(0)
+Gui.F_Recon..Event(UnLoad,Unload)
+Gui.F_Recon.tab1.Create(Tab)
+Gui.F_Recon.tab1.Size(12960,7650)
+Gui.F_Recon.tab1.Position(105,1395)
+Gui.F_Recon.tab1.FontSize(9)
+Gui.F_Recon.tab1.Tabs(6)
+Gui.F_Recon.tab1.SetTab(0)
+Gui.F_Recon.tab1.Caption("Reconciliation")
+Gui.F_Recon.tab1.SetTab(1)
+Gui.F_Recon.tab1.Caption("Job Detail")
+Gui.F_Recon.tab1.SetTab(2)
+Gui.F_Recon.tab1.Caption("Inventory Transactions")
+Gui.F_Recon.tab1.SetTab(3)
+Gui.F_Recon.tab1.Caption("Labor/ OH Batch")
+Gui.F_Recon.tab1.SetTab(4)
+Gui.F_Recon.tab1.Caption("Late Cost to Job")
+Gui.F_Recon.tab1.SetTab(5)
+Gui.F_Recon.tab1.Caption("AP (R10/R11)")
+Gui.F_Recon.GsGCRecon.Create(GsGridControl)
+Gui.F_Recon.GsGCRecon.Size(12675,7005)
+Gui.F_Recon.GsGCRecon.Position(90,90)
+Gui.F_Recon.GsGCRecon.Parent("tab1",0)
+Gui.F_Recon.GsGCRecon.Event(RowCellClick,GsGCRecon_RowCellClick)
+Gui.F_Recon.GsGCInv.Create(GsGridControl)
+Gui.F_Recon.GsGCInv.Size(12675,7005)
+Gui.F_Recon.GsGCInv.Position(90,90)
+Gui.F_Recon.GsGCInv.Parent("tab1",2)
+Gui.F_Recon.GsGCLabor.Create(GsGridControl)
+Gui.F_Recon.GsGCLabor.Size(12675,7005)
+Gui.F_Recon.GsGCLabor.Position(90,90)
+Gui.F_Recon.GsGCLabor.Parent("tab1",3)
+Gui.F_Recon.GsGCLate.Create(GsGridControl)
+Gui.F_Recon.GsGCLate.Size(12675,7005)
+Gui.F_Recon.GsGCLate.Position(90,90)
+Gui.F_Recon.GsGCLate.Parent("tab1",4)
+Gui.F_Recon.GsGCAP.Create(GsGridControl)
+Gui.F_Recon.GsGCAP.Size(12675,7005)
+Gui.F_Recon.GsGCAP.Position(90,90)
+Gui.F_Recon.GsGCAP.Parent("tab1",5)
+Gui.F_Recon.GsGCJob.Create(GsGridControl)
+Gui.F_Recon.GsGCJob.Size(12675,7005)
+Gui.F_Recon.GsGCJob.Position(90,90)
+Gui.F_Recon.GsGCJob.Parent("tab1",1)
+Gui.F_Recon.picGSSLogo.Create(PictureBox)
+Gui.F_Recon.picGSSLogo.Size(4125,960)
+Gui.F_Recon.picGSSLogo.Position(105,165)
+Gui.F_Recon.frame1.Create(Frame)
+Gui.F_Recon.frame1.Size(3675,1080)
+Gui.F_Recon.frame1.Position(8145,90)
+Gui.F_Recon.frame1.Caption("WIP Period Date ")
+Gui.F_Recon.frame1.FontSize(9)
+Gui.F_Recon.dtpStart.Create(DatePicker)
+Gui.F_Recon.dtpStart.Size(1635,285)
+Gui.F_Recon.dtpStart.Position(105,600)
+Gui.F_Recon.dtpStart.Parent("frame1")
+Gui.F_Recon.dtpEnd.Create(DatePicker)
+Gui.F_Recon.dtpEnd.Size(1635,285)
+Gui.F_Recon.dtpEnd.Position(1875,600)
+Gui.F_Recon.dtpEnd.Parent("frame1")
+Gui.F_Recon.lbl1.Create(Label,"From",True,1440,255,0,75,375,True,0,"Arial",9,-2147483633,0)
+Gui.F_Recon.lbl1.Parent("frame1")
+Gui.F_Recon.lbl2.Create(Label,"Until",True,1440,255,0,1845,375,True,0,"Arial",9,-2147483633,0)
+Gui.F_Recon.lbl2.Parent("frame1")
+Gui.F_Recon.cmdRefresh.Create(Button)
+Gui.F_Recon.cmdRefresh.Size(1125,1095)
+Gui.F_Recon.cmdRefresh.Position(11910,90)
+Gui.F_Recon.cmdRefresh.Caption("REFRESH")
+Gui.F_Recon.cmdRefresh.FontSize(15)
+Gui.F_Recon.cmdRefresh.Event(Click,CutoffDateCheck)
+Gui.F_Recon.progressBar1.Create(ProgressBar)
+Gui.F_Recon.progressBar1.Size(3570,255)
+Gui.F_Recon.progressBar1.Position(4440,825)
+Gui.F_Recon.lblProgress.Create(Label,"Label",True,3585,510,0,4440,285,True,0,"Arial",9,-2147483633,0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+V.Global.dBegDate.Declare(Date)
+V.Global.dEndDate.Declare(Date)
+V.Global.iVersion.Declare
+V.Global.sJobIndirect.Declare
+V.Global.sLaborGL.Declare
+V.Global.sMaterialGL1.Declare
+V.Global.sMaterialGL2.Declare
+V.Global.sMaterialGL3.Declare
+V.Global.sMaterialGL4.Declare
+V.Global.sMaterialGL5.Declare
+V.Global.sMaterialGL6.Declare
+V.Global.sOverheadGL.Declare
+V.Global.sSuffixIndirect.Declare
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+V.Local.dCutoff.Declare(Date)
+V.Local.i1.Declare
+V.Local.sGSSLogo.Declare
+V.Local.sIconPath.Declare
+
+F.ODBC.Connection!conx.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass,600)
+
+F.Intrinsic.Control.CallSub(gssversiontablesetup)
+
+'Check for version to set for the table column
+F.Intrinsic.Control.If(V.Caller.GSSVersion,>=,"2017.1")
+	V.Global.iVersion.Set(1)
+F.Intrinsic.Control.Else
+	V.Global.iVersion.Set(0)
+F.Intrinsic.Control.EndIf
+
+'Initialize cutoff date 
+F.Intrinsic.Date.DateAdd("D",-1,V.Ambient.Date,V.Local.dCutoff)
+Gui.F_Recon.dtpEnd.Value(V.Local.dCutoff)
+F.Intrinsic.Date.DateAdd("M",-1,V.Local.dCutoff,V.Local.dCutoff)
+Gui.F_Recon.dtpStart.Value(V.Local.dCutoff)
+
+F.Intrinsic.Control.CallSub(retrievewipgl)
+
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\gss2.ico",V.Local.sIconPath)
+F.Intrinsic.String.Concat(V.Caller.GlobalDir,"\ART\GAB_GSS_Logo_Green_Dash.png",V.Local.sGSSLogo)
+Gui.F_Recon.picGSSLogo.Picture(V.Local.sGSSLogo)
+Gui.F_Recon..Icon(V.Local.sIconPath)
+
+F.Intrinsic.Control.CallSub(setscreencomponents)
+F.Intrinsic.Control.CallSub(setcontextmenus)
+
+Gui.F_Recon..Show
+Program.Sub.Main.End
+
+Program.Sub.Unload.Start
+F.Intrinsic.Control.If(V.DataTable.dtRecon.Exists,=,True)
+	F.Data.DataTable.Close("dtRecon")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtLBatch.Exists,=,True)
+	F.Data.DataTable.Close("dtLBatch")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtJob.Exists,=,True)
+	F.Data.DataTable.Close("dtJob")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtInventory.Exists,=,True)
+	F.Data.DataTable.Close("dtInventory")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtLateCost.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtLateCost!dvLateCost.Exists,=,True)
+		F.Data.DataView.Close("dtLateCost","dvLateCost")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtLateCost")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.dtAP.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtAP!dvAP.Exists,=,True)
+		F.Data.DataView.Close("dtAP","dvAP")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtAP")
+F.Intrinsic.Control.EndIf
+
+F.Data.DataTable.Close("dtCOS")
+F.Data.DataTable.Close("dtWIPGL")
+F.Data.DataTable.Close("dtGLDetail")
+F.Data.DataTable.Close("dtWIPAP")
+F.Data.Dictionary.Close("dicUM")
+
+F.ODBC.Connection!conx.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.ddlYear_Change.Start
+V.Local.iPeriod.Declare
+V.Local.iYear.Declare
+V.Local.sBegDate.Declare
+V.Local.sEndDate.Declare
+V.Local.sPeriod.Declare
+V.Local.sSQL.Declare
+
+V.Local.iPeriod.Set(V.Screen.F_Recon!ddlPeriod.Text)
+V.Local.iYear.Set(V.Screen.F_Recon!ddlYear.Text)
+
+F.Intrinsic.String.LPad(V.Local.iPeriod,"0",2,V.Local.sPeriod)
+F.Intrinsic.String.Build("select beg_date, end_date from v_gl_calendar where period = '{0}' and start_year = '{1}'",V.Local.sPeriod.Trim,V.Local.iYear,V.Local.sSQL)
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+F.Intrinsic.String.Format(V.ODBC.conx!rst.FieldVal!beg_date,"D Mmm YYYY",V.Local.sBegDate)
+F.Intrinsic.String.Format(V.ODBC.conx!rst.FieldVal!end_date,"D Mmm YYYY",V.Local.sEndDate)
+F.Intrinsic.String.Build("{0} - {1}",V.Local.sBegDate,V.Local.sEndDate,V.Local.sPeriod)
+F.ODBC.conx!rst.Close
+Program.Sub.ddlYear_Change.End
+
+Program.Sub.cmdRefresh_Click.Start
+V.Local.dBegDate.Declare(Date)
+V.Local.dEndDate.Declare(Date)
+V.Local.dPostDate.Declare(Date)
+V.Local.fAP.Declare
+V.Local.sGLDetailAmount.Declare
+V.Local.sGLDetailBatch.Declare
+V.Local.sGLDetailPostDate.Declare
+V.Local.fGLLabor.Declare
+V.Local.fGLOH.Declare
+V.Local.fInventory.Declare
+V.Local.fJobDetail1.Declare
+V.Local.fJobDetail2.Declare
+V.Local.fLaborOH.Declare
+V.Local.fLateCost.Declare
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iLabor.Declare
+V.Local.iRem.Declare
+V.Local.sAccountAP.Declare
+V.Local.sAccountCOS.Declare
+V.Local.sAccountInv.Declare
+V.Local.sAccountLate.Declare
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+V.Local.sSQL.Declare
+
+'Get date range
+V.Local.dBegDate.Set(V.Screen.F_Recon!dtpStart.Value)
+V.Local.dEndDate.Set(V.Screen.F_Recon!dtpEnd.Value)
+
+V.Global.dBegDate.Set(V.Screen.F_Recon!dtpStart.Value)
+V.Global.dEndDate.Set(V.Screen.F_Recon!dtpEnd.Value)
+
+F.Intrinsic.Control.If(V.DataTable.dtRecon.Exists,=,True)
+	F.Data.DataTable.Close("dtRecon")
+F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.DataTable.dtLBatch.Exists,=,True)
+'	F.Intrinsic.Control.If(V.DataView.dtLBatch!dvLBatch.Exists,=,True)
+'		F.Data.DataView.Close("dtLBatch","dvLBatch")
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtLBatch")
+'F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.DataTable.dtJob.Exists,=,True)
+'	F.Intrinsic.Control.If(V.DataView.dtJob!dvJob.Exists,=,True)
+'		F.Data.DataView.Close("dtJob","dvJob")
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtJob")
+'F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.DataTable.dtInventory.Exists,=,True)
+'	F.Intrinsic.Control.If(V.DataView.dtInventory!dvInventory.Exists,=,True)
+'		F.Data.DataView.Close("dtInventory","dvInventory")
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtInventory")
+'F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.DataTable.dtLateCost.Exists,=,True)
+'	F.Intrinsic.Control.If(V.DataView.dtLateCost!dvLateCost.Exists,=,True)
+'		F.Data.DataView.Close("dtLateCost","dvLateCost")
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtLateCost")
+'F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.Control.If(V.DataTable.dtAP.Exists,=,True)
+'	F.Intrinsic.Control.If(V.DataView.dtAP!dvAP.Exists,=,True)
+'		F.Data.DataView.Close("dtAP","dvAP")
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtAP")
+'F.Intrinsic.Control.EndIf
+
+Gui.F_Recon.tab1.Visible(False)
+Gui.F_Recon.lblProgress.Caption("Start Data Processing")
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+Gui.F_Recon.progressBar1.Min(0)
+Gui.F_Recon.progressBar1.Max(100)
+
+'Get job detail posted within the date range
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(left(job,6)+'-'+left(suffix,3)) as WO, Job, Suffix from v_job_header where (date_closed >= '{0}' or date_closed = '1900-01-01') and date_opened <= '{3}' and job <> '' and job not like '%IND%' and ucase(left(job,1)) <> 'Z' and (job <> '{1}' or suffix <> '{2}') order by job, suffix",V.Local.dBegDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+F.Intrinsic.String.Build("select distinct substring(job,1,6) as Job, substring(suffix,1,3) as Suffix, location as Loc, product_line as PL, project as Project from v_job_header where (date_closed >= '{0}' or date_closed = '1900-01-01') and date_opened <= '{3}' and job <> '' and job not like '%IND%' and ucase(left(job,1)) <> 'Z' and (job <> '{1}' or suffix <> '{2}') order by job, suffix",V.Local.dBegDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtRecon","conx",V.Local.sSQL,True)
+
+F.Data.DataTable.AddExpressionColumn("dtRecon","WO","String","SUBSTRING(Job,1,6)+'-'+SUBSTRING(Suffix,1,3)")
+F.Data.DataTable.AddColumn("dtRecon","WIP1","Float",0)
+F.Data.DataTable.AddColumn("dtRecon","WIP2","Float",0)
+F.Data.DataTable.AddExpressionColumn("dtRecon","dWIP","Float","WIP2-WIP1")
+F.Data.DataTable.AddColumn("dtRecon","Inventory","Float",0)
+F.Data.DataTable.AddColumn("dtRecon","LaborOH","Float",0)
+F.Data.DataTable.AddColumn("dtRecon","LCheck","Long",0)
+F.Data.DataTable.AddColumn("dtRecon","LateCost","Float",0)
+F.Data.DataTable.AddColumn("dtRecon","AP","Float",0)
+F.Data.DataTable.AddExpressionColumn("dtRecon","dGL","Float","Inventory+LaborOH+LateCost+AP")
+F.Data.DataTable.AddExpressionColumn("dtRecon","dNet","Float","dWIP-dGL")
+
+'Get distinct labor batch no from job detail
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(left(lbr_batch_no,5)) as Batch from v_job_detail where lbr_batch_no <> '' and charge_date between '{0}' and '{1}' and (job <> '{2}' or suffix <> '{3}') and ucase(left(job,1)) <> 'Z'",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'F.Intrinsic.String.Build("select (left(lbr_batch_no,5)) as Batch, sum(amount_labor) as Job_Labor, sum(amt_overhead) as Job_OH from v_job_detail where lbr_batch_no <> '' and left(lbr_batch_no,1) <> 'I' and charge_date between '{0}' and '{1}' and (job <> '{2}' or suffix <> '{3}') and ucase(left(job,1)) <> 'Z' group by lbr_batch_no",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtLBatch","conx",V.Local.sSQL,True)
+'F.Data.DataTable.AddExpressionColumn("dtLBatch","Job_Total","Float","Job_Labor+Job_OH")
+'F.Data.DataTable.AddColumn("dtLBatch","PostDate","Date","01-01-1900")
+'F.Data.DataTable.AddColumn("dtLBatch","GL_Labor","Float",0)
+'F.Data.DataTable.AddColumn("dtLBatch","GL_OH","Float",0)
+'F.Data.DataTable.AddExpressionColumn("dtLBatch","GL_Total","Float","GL_Labor+GL_OH")
+
+'Gui.F_Recon.lblProgress.Caption("Loading all Labor/OH batches within the period")
+'Gui.F_Recon.progressBar1.Min(0)
+'Gui.F_Recon.progressBar1.Max(100)
+''Retrieve labor batch amount summary from job detail and GL detail
+''Process every 10 GL accounts from dtCOS if there are more than 10 GL accounts
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCOS.RowCount--,1)
+'	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'	F.Intrinsic.Control.If(V.DataTable.dtCOS.RowCount,>,9)
+'		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtCOS.RowCount,V.Local.iRem)
+'	F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.If(V.Local.sAccountCOS.Trim,=,"")
+'		F.Intrinsic.String.Build("({0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtCOS(V.Local.i1).Account!FieldValTrim,V.Local.sAccountCOS)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.String.Build("{2} or {0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtCOS(V.Local.i1).Account!FieldValTrim,V.Local.sAccountCOS,V.Local.sAccountCOS)
+'	F.Intrinsic.Control.EndIf
+'	
+'	F.Intrinsic.Control.If(V.Local.iRem,=,0)
+'		F.Intrinsic.String.Concat(V.Local.sAccountCOS,")",V.Local.sAccountCOS)
+'		F.Intrinsic.String.Build("select {2} as Batch, {0} as PostDate, {1} as Amount, {4} as Description from v_gl_detail where {0} between '{5}' and '{6}' and {7} and {2} like 'L%'",V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountCOS,V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.DataTable.dtGL.Exists,=,False)
+'			F.Data.DataTable.CreateFromSQL("dtGL","conx",V.Local.sSQL)
+'		F.Intrinsic.Control.Else
+'			F.Data.DataTable.CreateFromSQL("dtGLTemp","conx",V.Local.sSQL)
+'			F.Data.DataTable.Merge("dtGLTemp","dtGL",True,1)
+'			F.Data.DataTable.Close("dtGLTemp")
+'		F.Intrinsic.Control.EndIf
+'		V.Local.sAccountCOS.Set("")
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Next(V.Local.i1)
+
+'---------------------------------------------------------------------------------------------------------------------
+''F.Intrinsic.String.Build("select {2} as Batch, {0} as PostDate, {1} as Amount, {4} as Description from v_gl_detail where {0} between '{5}' and '{6}' and ({3} = '{7}' or {3} = '{8}') and {2} like 'L%'",V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sLaborGL.Trim,V.Global.sOverheadGL.Trim,V.Local.sSQL)
+''F.Data.DataTable.CreateFromSQL("dtGL","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'F.Intrinsic.Control.If(V.DataTable.dtGL.Exists,=,True)
+'	F.Intrinsic.Date.ConvertDString("19000101","YYYYMmDd",V.Local.dPostDate)
+'	F.Data.Dictionary.CreateFromDataTable("dicPost","dtGL","Batch","PostDate")
+'	F.Data.Dictionary.SetDefaultReturn("dicPost",V.Local.dPostDate)
+'	F.Data.DataTable.FillFromDictionary("dtLBatch","dicPost","Batch","PostDate")
+'	F.Data.Dictionary.Close("dicPost")
+'	
+'	F.Data.DataView.Create("dtGL","dvLabor",22,"Description LIKE '%Labor%'","")
+'	F.Data.Dictionary.CreateFromDataView("dicLabor","dtGL","dvLabor","Batch","Amount")
+'	F.Data.Dictionary.SetDefaultReturn("dicLabor",0)
+'	F.Data.DataTable.FillFromDictionary("dtLBatch","dicLabor","Batch","GL_Labor")
+'	F.Data.Dictionary.Close("dicLabor")
+'	F.Data.DataView.Close("dtGL","dvLabor")
+'	
+'	F.Data.DataView.Create("dtGL","dvOH",22,"Description LIKE '%Overhead%'","")
+'	F.Data.Dictionary.CreateFromDataView("dicOH","dtGL","dvOH","Batch","Amount")
+'	F.Data.Dictionary.SetDefaultReturn("dicOH",0)
+'	F.Data.DataTable.FillFromDictionary("dtLBatch","dicOH","Batch","GL_OH")
+'	F.Data.Dictionary.Close("dicOH")
+'	F.Data.DataView.Close("dtGL","dvOH")
+'	
+'	F.Data.DataTable.Close("dtGL")
+'F.Intrinsic.Control.EndIf
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select left(lbr_batch_no,5), sum(amount_labor) from v_job_detail where lbr_batch_no <> '' and charge_date between '{0}' and '{1}' and (job <> '{2}' or suffix <> '{3}') and ucase(left(job,1)) <> 'Z' group by lbr_batch_no",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicLbr","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dicLbr",0)
+'F.Data.DataTable.FillFromDictionary("dtLBatch","dicLbr","Batch","Job_Labor")
+'F.Data.Dictionary.Close("dicLbr")
+'Gui.F_Recon.progressBar1.Value(5)
+'
+'F.Intrinsic.String.Build("select left(lbr_batch_no,5), sum(amt_overhead) from v_job_detail where lbr_batch_no <> '' and charge_date between '{0}' and '{1}' and (job <> '{2}' or suffix <> '{3}') and ucase(left(job,1)) <> 'Z' group by lbr_batch_no",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicOH","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dicOH",0)
+'F.Data.DataTable.FillFromDictionary("dtLBatch","dicOH","Batch","Job_OH")
+'F.Data.Dictionary.Close("dicOH")
+'Gui.F_Recon.progressBar1.Value(10)
+
+'F.Intrinsic.String.Build("select left(batch_num,5), sum(amount) from v_gl_detail where left(batch_num,1) = 'L' and gl_account = '{0}' and left(descr,9) = 'WIP-Labor' and post_date between '{1}' and '{2}' group by batch_num",V.Global.sLaborGL.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicLbr","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dicLbr",0)
+'F.Data.DataTable.FillFromDictionary("dtLBatch","dicLbr","Batch","GL_Labor")
+'F.Data.Dictionary.Close("dicLbr")
+'Gui.F_Recon.progressBar1.Value(15)
+'
+'F.Intrinsic.String.Build("select left(batch_num,5), sum(amount) from v_gl_detail where left(batch_num,1) = 'L' and gl_account = '{0}' and rtrim(descr) like 'WIP-Overhead' and post_date between '{1}' and '{2}' group by batch_num",V.Global.sOverheadGL.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicOH","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dicOH",0)
+'F.Data.DataTable.FillFromDictionary("dtLBatch","dicOH","Batch","GL_OH")
+'F.Data.Dictionary.Close("dicOH")
+'Gui.F_Recon.progressBar1.Value(20)
+
+'F.Intrinsic.Control.If(V.DataTable.dtLBatch.RowCount,>,0)
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtLBatch.RowCount--,1)
+'		'GL labor
+'		F.Intrinsic.String.Build("select {2} as post_date, {3} as amount from v_gl_detail where {4} = '{0}' and  {5} = '{1}' and {6} like '%Labor%' order by {2} desc",V.DataTable.dtLBatch(V.Local.i1).Batch!FieldValTrim,V.Global.sLaborGL.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+'			V.Local.fGLLabor.Set(0)
+'			F.Intrinsic.Date.ConvertDString("19000101","YYYYMmDd",V.Local.dPostDate)
+'		F.Intrinsic.Control.Else
+'			V.Local.fGLLabor.Set(V.ODBC.conx!rst.FieldValFloat!amount)
+'			V.Local.dPostDate.Set(V.ODBC.conx!rst.FieldVal!post_date)
+'		F.Intrinsic.Control.EndIf
+'		F.ODBC.conx!rst.Close
+'		'GL overhead
+'		F.Intrinsic.String.Build("select {3} as amount from v_gl_detail where {4} = '{0}' and {5} = '{1}' and {6} like '%Overhead%' order by {2} desc",V.DataTable.dtLBatch(V.Local.i1).Batch!FieldValTrim,V.Global.sOverheadGL.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sSQL)
+'		F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst",V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,True)
+'			V.Local.fGLOH.Set(0)
+'		F.Intrinsic.Control.Else
+'			V.Local.fGLOH.Set(V.ODBC.conx!rst.FieldValFloat!amount)
+'		F.Intrinsic.Control.EndIf
+'		F.ODBC.conx!rst.Close
+'		
+'		F.Data.DataTable.SetValue("dtLBatch",V.Local.i1,"PostDate",V.Local.dPostDate,"GL_Labor",V.Local.fGLLabor,"GL_OH",V.Local.fGLOH)
+'	F.Intrinsic.Control.Next(V.Local.i1)
+'F.Intrinsic.Control.EndIf
+'---------------------------------------------------------------------------------------------------------------------
+
+'Gui.F_Recon.progressBar1.Value(20)
+
+'Gui.F_Recon.lblProgress.Caption("Calculating WIP Reconciliation")
+
+'Get WIP 1 data
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(job+'-'+suffix), sum(amount_labor+amt_overhead) from v_job_detail where charge_date < '{0}' group by job, suffix",V.Local.dBegDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicWIP","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'Get the labor and OH amount for a distinct job-suffix number from job_detail
+'F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date < '{0}' group by job, suffix",V.Local.dBegDate.PervasiveDate,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+'F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+'F.Data.Dictionary.CreateFromDataTable("dicWIP","dtW","Job","Amount")
+'F.Data.DataTable.Close("dtW")
+
+'F.Data.Dictionary.SetDefaultReturn("dicWIP",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicWIP","WO","WIP1")
+'F.Data.Dictionary.Close("dicWIP")
+'Gui.F_Recon.progressBar1.Value(30)
+
+'Get WIP 2 data
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(job+'-'+suffix), sum(amount_labor+amt_overhead) from v_job_detail where charge_date <= '{0}' group by job, suffix",V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicWIP","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'Get the labor and OH amount for a distinct job-suffix number from job_detail
+'F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date <= '{0}' group by job, suffix",V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+'F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+'F.Data.Dictionary.CreateFromDataTable("dicWIP","dtW","Job","Amount")
+'F.Data.DataTable.Close("dtW")
+
+'F.Data.Dictionary.SetDefaultReturn("dicWIP",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicWIP","WO","WIP2")
+'F.Data.Dictionary.Close("dicWIP")
+'Gui.F_Recon.progressBar1.Value(40)
+
+'Get Inventory data
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("(account = '{0}'",V.Global.sMaterialGL1.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.If(V.Global.sMaterialGL2.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or account = '{1}'",V.Local.sAccountInv,V.Global.sMaterialGL2.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL3.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or account = '{1}'",V.Local.sAccountInv,V.Global.sMaterialGL3.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL4.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or account = '{1}'",V.Local.sAccountInv,V.Global.sMaterialGL4.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL5.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or account = '{1}'",V.Local.sAccountInv,V.Global.sMaterialGL5.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL6.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or account = '{1}'",V.Local.sAccountInv,V.Global.sMaterialGL6.Trim,V.Local.sAccountInv)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.String.Concat(V.Local.sAccountInv,")",V.Local.sAccountInv)
+
+'F.Intrinsic.String.Build("select wo, wo_suffix as suffix, sum(dr_amount) as Dr,sum(cr_amount) as Cr from v_gl_inventory_dtls where {0} and invc_date between '{1}' and '{2}' group by wo, wo_suffix",V.Local.sAccountInv.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtInv1","conx",V.Local.sSQL)
+'F.Data.DataTable.AddExpressionColumn("dtInv1","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.DataTable.AddExpressionColumn("dtInv1","Amount","Float","Dr-Cr")
+'F.Data.DataTable.AddExpressionColumn("dtInv1","AmountSum","Float","Sum(Amount)")
+'F.Data.DataView.Create("dtInv1","dvInv1")
+'F.Data.DataView.ToDataTableDistinct("dtInv1","dvInv1","dtInv2","wo*!*suffix*!*AmountSum")
+'F.Data.Dictionary.CreateFromDataTable("dicInv1","dtInv1","Job","Amount")
+'---------------------------------------------------------------------------------------------------------------------
+
+'Get the debit amount for a distinct job-suffix number from gl_inventory_dtls and also late cost
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL.RowCount--,1)
+'	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'	F.Intrinsic.Control.If(V.DataTable.dtWIPGL.RowCount,>,9)
+'		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPGL.RowCount,V.Local.iRem)
+'	F.Intrinsic.Control.EndIf
+'	'Inventory batch account
+'	F.Intrinsic.Control.If(V.Local.sAccountInv.Trim,=,"")
+'		F.Intrinsic.String.Build("({0} = '{1}'","Account",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountInv)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.String.Build("{2} or {0} = '{1}'","Account",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountInv,V.Local.sAccountInv)
+'	F.Intrinsic.Control.EndIf
+'	
+'	'Late cost account
+'	F.Intrinsic.Control.If(V.Local.sAccountLate.Trim,=,"")
+'		F.Intrinsic.String.Build("({0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountLate)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.String.Build("{2} or {0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountLate,V.Local.sAccountLate)
+'	F.Intrinsic.Control.EndIf
+'	
+'	F.Intrinsic.Control.If(V.Local.iRem,=,0)
+'		'Inventory batch
+'		F.Intrinsic.String.Concat(V.Local.sAccountInv,")",V.Local.sAccountInv)
+'		F.Intrinsic.String.Build("select wo, wo_suffix as suffix, sum(dr_amount) as Dr, sum(cr_amount) as Cr from v_gl_inventory_dtls where {0} and invc_date between '{1}' and '{2}' group by wo, wo_suffix",V.Local.sAccountInv.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.DataTable.dtInv.Exists,=,False)
+'			F.Data.DataTable.CreateFromSQL("dtInv","conx",V.Local.sSQL)
+'		F.Intrinsic.Control.Else
+'			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'			F.Data.DataTable.Merge("dtTemp","dtInv",True,1)
+'			F.Data.DataTable.Close("dtTemp")
+'		F.Intrinsic.Control.EndIf
+'		
+'		'Inventory batch data
+'		F.Intrinsic.String.Build("select Batch, post_date as PostDate, Line, Account, (dr_amount-cr_amount) as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(wo_suffix,3) as Suffix, wo_seq as Seq, Part, refer_1 as Description, -1*quantity as Quantity, '' as UM, trans_code as TC from v_gl_inventory_dtls where {2} and invc_date between '{0}' and '{1}' order by Job, Suffix, Seq, ChargeDate",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountInv.Trim,V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.DataTable.dtInvTemp.Exists,=,False)
+'			F.Data.DataTable.CreateFromSQL("dtInvTemp","conx",V.Local.sSQL,True)
+'		F.Intrinsic.Control.Else
+'			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'			F.Data.DataTable.Merge("dtTemp","dtInvTemp",True,1)
+'			F.Data.DataTable.Close("dtTemp")
+'		F.Intrinsic.Control.EndIf
+'		
+'		V.Local.sAccountInv.Set("")
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Next(V.Local.i1)
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select wo, wo_suffix as suffix, sum(dr_amount) as Dr, sum(cr_amount) as Cr from v_gl_inventory_dtls where {0} and invc_date between '{1}' and '{2}' group by wo, wo_suffix",V.Local.sAccountInv.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtInv","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'F.Data.DataTable.AddExpressionColumn("dtInv","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.DataTable.AddExpressionColumn("dtInv","Amount","Float","Dr-Cr")
+'F.Data.Dictionary.CreateFromDataTable("dicInv","dtInv","Job","Amount")
+'F.Data.DataTable.Close("dtInv")
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(left(wo,6)+'-'+left(wo_suffix,3)), sum(dr_amount)-sum(cr_amount) from v_gl_inventory_dtls where {0} and invc_date between '{1}' and '{2}' group by wo, wo_suffix",V.Local.sAccountInv.Trim,V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicInv","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'F.Data.Dictionary.SetDefaultReturn("dicInv",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicInv","WO","Inventory")
+'F.Data.Dictionary.Close("dicInv")
+'Gui.F_Recon.progressBar1.Value(60)
+
+'Get Labor/OH data
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select distinct(job+'-'+suffix), sum(amount_labor+amt_overhead) from v_job_detail where charge_date between '{0}' and '{1}' and lbr_batch_no <> '' group by job, suffix",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicLabor","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'Get the labor amount for a distinct job-suffix number from job_detail
+'F.Intrinsic.String.Build("select distinct job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date between '{0}' and '{1}' and lbr_batch_no <> '' group by job, suffix",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+'F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+'F.Data.Dictionary.CreateFromDataTable("dicLabor","dtW","Job","Amount")
+'F.Data.DataTable.Close("dtW")
+'F.Data.Dictionary.SetDefaultReturn("dicLabor",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicLabor","WO","LaborOH")
+'F.Data.Dictionary.Close("dicLabor")
+'Gui.F_Recon.progressBar1.Value(70)
+
+'Get Late Cost data
+'F.Intrinsic.String.Build("({1} = '{0}'",V.Global.sMaterialGL1.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.If(V.Global.sMaterialGL2.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or {2} = '{1}'",V.Local.sAccountLate,V.Global.sMaterialGL2.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL3.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or {2} = '{1}'",V.Local.sAccountLate,V.Global.sMaterialGL3.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL4.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or {2} = '{1}'",V.Local.sAccountLate,V.Global.sMaterialGL4.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL5.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or {2} = '{1}'",V.Local.sAccountLate,V.Global.sMaterialGL5.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.If(V.Global.sMaterialGL6.Trim,<>,"")
+'	F.Intrinsic.String.Build("{0} or {2} = '{1}'",V.Local.sAccountLate,V.Global.sMaterialGL6.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.Local.sAccountLate)
+'F.Intrinsic.Control.EndIf
+
+'F.Intrinsic.String.Concat(V.Local.sAccountLate,")",V.Local.sAccountLate)
+'F.Intrinsic.String.Build("select substring({6},20,10), sum({3}) from v_gl_detail where {4} like 'M%' and reference <> '' and {5} between '{0}' and '{1}' and {2} group by {6}",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountLate.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sSQL)
+'F.Data.Dictionary.CreateFromSQL("dicLate","conx",V.Local.sSQL)
+'F.Data.Dictionary.SetDefaultReturn("dicLate",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicLate","WO","LateCost")
+'F.Data.Dictionary.Close("dicLate")
+'Gui.F_Recon.progressBar1.Value(80)
+
+'Get AP data
+'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPAP.RowCount--,1)
+'	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'	F.Intrinsic.Control.If(V.DataTable.dtWIPAP.RowCount,>,9)
+'		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPAP.RowCount,V.Local.iRem)
+'	F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.If(V.Local.sAccountAP.Trim,=,"")
+'		F.Intrinsic.String.Build("({0} = '{1}'","gl_Account",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP)
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.String.Build("{2} or {0} = '{1}'","gl_Account",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP,V.Local.sAccountAP)
+'	F.Intrinsic.Control.EndIf
+'	
+'	F.Intrinsic.Control.If(V.Local.iRem,=,0)
+'		F.Intrinsic.String.Concat(V.Local.sAccountAP,")",V.Local.sAccountAP)
+'		F.Intrinsic.String.Build("select wo, suffix, sum(cost_invoiced) as Amount from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and gl_trns_type = '07' and {2} group by wo, suffix",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.DataTable.dtAPD.Exists,=,False)
+'			F.Data.DataTable.CreateFromSQL("dtAPD","conx",V.Local.sSQL)
+'		F.Intrinsic.Control.Else
+'			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'			F.Data.DataTable.Merge("dtTemp","dtAPD",True,1)
+'			F.Data.DataTable.Close("dtTemp")
+'		F.Intrinsic.Control.EndIf
+'		
+'		F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, ext_cost as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(suffix,3) as Suffix, Seq, Receiver, po_no as PO, po_line as POLine, qty as Quantity, cost_invoiced as UnitCost from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and gl_trns_type = '07' and {2} order by batch_num, post_date, batch_line",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'		F.Intrinsic.Control.If(V.DataTable.dtAPTemp.Exists,=,False)
+'			F.Data.DataTable.CreateFromSQL("dtAPTemp","conx",V.Local.sSQL,True)
+'		F.Intrinsic.Control.Else
+'			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'			F.Data.DataTable.Merge("dtTemp","dtAPTemp",True,1)
+'			F.Data.DataTable.Close("dtTemp")
+'		F.Intrinsic.Control.EndIf
+'		V.Local.sAccountAP.Set("")
+'	F.Intrinsic.Control.EndIf
+'F.Intrinsic.Control.Next(V.Local.i1)
+
+'---------------------------------------------------------------------------------------------------------------------
+'F.Intrinsic.String.Build("select wo, suffix, sum(cost_invoiced) as Amount from v_invc_dtl_vat where received_date between '{0}' and '{1}' and gl_trns_type = '07' and (gl_account = '{2}' or gl_account = '{3}') group by wo, suffix",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sMaterialGL1.Trim,V.Global.sMaterialGL4.Trim,V.Local.sSQL)
+'F.Data.DataTable.CreateFromSQL("dtAPD","conx",V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'F.Data.DataTable.AddExpressionColumn("dtAPD","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+'F.Data.Dictionary.CreateFromDataTable("dicAP","dtAPD","Job","Amount")
+'F.Data.DataTable.Close("dtAPD")
+'F.Data.Dictionary.SetDefaultReturn("dicAP",0)
+'F.Data.DataTable.FillFromDictionary("dtRecon","dicAP","WO","AP")
+'F.Data.Dictionary.Close("dicAP")
+'Gui.F_Recon.progressBar1.Value(90)
+
+Gui.F_Recon.lblProgress.Caption("Reconciling WIP data")
+F.Intrinsic.Control.If(V.DataTable.dtRecon.RowCount,>,0)
+'	Gui.F_Recon.progressBar1.Max(V.DataTable.dtRecon.RowCount)
+	
+	'Job Detail
+'	F.Intrinsic.String.Build("select Job, Suffix, Seq, charge_date as ChargeDate, LMO, Part, case lmo when 'L' then employee else description end as Description, case lmo when 'M' then amount_labor when 'O' then amount_labor else 0 end as Material, case lmo when 'L' then amount_labor else 0 end as Labor, amt_overhead as OH, lbr_batch_no as Batch from v_job_detail where charge_date between '{0}' and '{1}' and EDITED_WO_DTL <> 'R' order by job, suffix, seq, charge_date",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sSQL)
+'	F.Data.DataTable.CreateFromSQL("dtJobTemp","conx",V.Local.sSQL,True)	
+'	F.Data.Linq.Join("InnerJoin","datatable","dtJobTemp*!*J","datatable","dtRecon*!*W","J.Job=W.Job AND J.Suffix=W.Suffix","J.Job*!*J.Suffix*!*J.Seq*!*J.ChargeDate*!*J.LMO*!*J.Part*!*J.Description*!*J.Material*!*J.Labor*!*J.OH*!*J.Batch","","","","dtJob",True)
+'	'If join returns nothing, clone datatable
+'	V.Local.sFilter.Set(V.DataTable.dtJob.FieldNames)
+'	F.Intrinsic.Control.If(V.Local.sFilter.Trim,=,"")
+'		F.Data.DataTable.Close("dtJob")
+'		F.Data.DataTable.Clone("dtJobTemp","dtJob",True)
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtJobTemp")
+	
+	F.Intrinsic.Control.CallSub(RefreshJobDetail)
+	Gui.F_Recon.progressBar1.Value(18)
+	
+	'Inventory batch
+	
+'---------------------------------------------------------------------------------------------------------------------
+'	F.Intrinsic.String.Build("select Batch, post_date as PostDate, Line, Account, (dr_amount-cr_amount) as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(wo_suffix,3) as Suffix, wo_seq as Seq, Part, refer_1 as Description, -1*quantity as Quantity, '' as UM, trans_code as TC from v_gl_inventory_dtls where {2} and invc_date between '{0}' and '{1}' order by Job, Suffix, Seq, ChargeDate",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountInv.Trim,V.Local.sSQL)
+'	F.Data.DataTable.CreateFromSQL("dtInvTemp","conx",V.Local.sSQL,True)
+'---------------------------------------------------------------------------------------------------------------------
+
+'	F.Data.Linq.Join("InnerJoin","datatable","dtInvTemp*!*J","datatable","dtRecon*!*W","W.Job=J.Job AND W.Suffix=J.Suffix","J.Batch*!*J.PostDate*!*J.Line*!*J.Account*!*J.Amount*!*J.ChargeDate*!*J.Job*!*J.Suffix*!*J.Seq*!*J.Part*!*J.Description*!*J.Quantity*!*J.UM*!*J.TC","","","","dtInventory",True)
+'	'If join returns nothing, clone datatable
+'	V.Local.sFilter.Set(V.DataTable.dtInventory.FieldNames)
+'	F.Intrinsic.Control.If(V.Local.sFilter.Trim,=,"")
+'		F.Data.DataTable.Close("dtInventory")
+'		F.Data.DataTable.Clone("dtInvTemp","dtInventory",True)
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtInvTemp")
+	
+	F.Intrinsic.Control.CallSub(RefreshInventory)
+	Gui.F_Recon.progressBar1.Value(36)
+	
+	F.Intrinsic.Control.CallSub(RefreshLaborBatch)
+	Gui.F_Recon.progressBar1.Value(54)
+	
+	'Late Cost to Job
+	
+'---------------------------------------------------------------------------------------------------------------------
+'	F.Intrinsic.String.Build("select {3} as Batch, {4} as PostDate, {5} as Line, {6} as Account, {7} as Amount, left(reference,10) as Reference from v_gl_detail where {3} like 'M%' and {4} between '{0}' and '{1}' and {2} order by Batch, PostDate, Line",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountLate.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Line!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.Local.sSQL)
+'---------------------------------------------------------------------------------------------------------------------
+
+'	F.Intrinsic.String.Build("select {3} as Batch, {4} as PostDate, {5} as Line, {6} as Account, {7} as Amount, substring({8},20,10) as Reference from v_gl_detail where {3} like 'M%' and {4} between '{0}' and '{1}' and {2} order by Batch, PostDate, Line",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Local.sAccountLate.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Line!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sSQL)
+'	F.Data.DataTable.CreateFromSQL("dtLateTemp","conx",V.Local.sSQL,True)
+'	F.Data.Linq.Join("InnerJoin","datatable","dtLateTemp*!*J","datatable","dtRecon*!*W","W.WO=J.Reference","J.Batch*!*J.PostDate*!*J.Line*!*J.Account*!*J.Amount*!*J.Reference","","","","dtLateCost",True)
+'	'If join returns nothing, clone datatable
+'	V.Local.sFilter.Set(V.DataTable.dtLateCost.FieldNames)
+'	F.Intrinsic.Control.If(V.Local.sFilter.Trim,=,"")
+'		F.Data.DataTable.Close("dtLateCost")
+'		F.Data.DataTable.Clone("dtLateTemp","dtLateCost",True)
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtLateTemp")
+	
+	F.Intrinsic.Control.CallSub(RefreshLateCost)
+	Gui.F_Recon.progressBar1.Value(72)
+	
+	'AP
+	
+'---------------------------------------------------------------------------------------------------------------------
+'	F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, ext_cost as Amount, received_date as ChargeDate, left(wo,6) as Job, left(suffix,3) as Suffix, Seq, Receiver, po_no as PO, po_line as POLine, qty as Quantity, cost_invoiced as UnitCost from v_invc_dtl_vat where received_date between '{0}' and '{1}' and gl_trns_type = '07' and (gl_account = '{2}' or gl_account = '{3}') order by batch_num, post_date, batch_line",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.Global.sMaterialGL1.trim,V.Global.sMaterialGL4.Trim,V.Local.sSQL)
+'	F.Data.DataTable.CreateFromSQL("dtAPTemp","conx",V.Local.sSQL,True)
+'---------------------------------------------------------------------------------------------------------------------
+
+'	F.Data.Linq.Join("InnerJoin","datatable","dtAPTemp*!*J","datatable","dtRecon*!*W","W.Job=J.Job AND W.Suffix=J.Suffix","J.Batch*!*J.PostDate*!*J.Line*!*J.Amount*!*J.ChargeDate*!*J.Job*!*J.Suffix*!*J.Seq*!*J.Receiver*!*J.PO*!*J.POLine*!*J.Quantity*!*J.UnitCost","","","","dtAP",True)
+'	'If join returns nothing, clone datatable
+'	V.Local.sFilter.Set(V.DataTable.dtAP.FieldNames)
+'	F.Intrinsic.Control.If(V.Local.sFilter.Trim,=,"")
+'		F.Data.DataTable.Close("dtAP")
+'		F.Data.DataTable.Clone("dtAPTemp","dtAP",True)
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Close("dtAPTemp")
+	
+	F.Intrinsic.Control.CallSub(RefreshAP)
+	Gui.F_Recon.progressBar1.Value(90)
+	
+'	F.Data.DataTable.FillFromDictionary("dtInventory","dicUM","Part","UM")
+	
+	Gui.F_Recon.GsGCRecon.AddGridviewFromDatatable("gvRecon","dtRecon")
+	Gui.F_Recon.GsGCRecon.MainView("gvRecon")
+'	F.Data.DataTable.AddExpressionColumn("dtJob","TotalCost","Float","Material+Labor+OH")
+'	F.Data.DataView.Create("dtJob","dvJob")
+'	Gui.F_Recon.GsGCJob.AddGridviewFromDataview("gvJob","dtJob","dvJob")
+'	Gui.F_Recon.GsGCJob.MainView("gvJob")
+'	F.Data.DataView.Create("dtInventory","dvInventory")
+'	Gui.F_Recon.GsGCInv.AddGridviewFromDataview("gvInv","dtInventory","dvInventory")
+'	Gui.F_Recon.GsGCInv.MainView("gvInv")
+'	F.Data.DataView.Create("dtLBatch","dvLBatch")
+'	Gui.F_Recon.GsGCLabor.AddGridviewFromDataview("gvLaborOH","dtLBatch","dvLBatch")
+'	Gui.F_Recon.GsGCLabor.MainView("gvLaborOH")
+'	F.Data.DataView.Create("dtAP","dvAP")
+'	Gui.F_Recon.GsGCAP.AddGridviewFromDataview("gvAP","dtAP","dvAP")
+'	Gui.F_Recon.GsGCAP.MainView("gvAP")
+'	F.Data.DataView.Create("dtLateCost","dvLateCost")
+'	Gui.F_Recon.GsGCLate.AddGridviewFromDataview("gvLate","dtLateCost","dvLateCost")
+'	Gui.F_Recon.GsGCLate.MainView("gvLate")
+	
+	Gui.F_Recon.lblProgress.Caption("Setting up the Reconciliation grid")
+	F.Intrinsic.Control.CallSub(gridviewproperties)
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.Msgbox("No WIP data found in job detail for the selected period","WIP Reconciliation [APAC]")
+F.Intrinsic.Control.EndIf
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.tab1.Visible(True)
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.RetrieveWIPGL.Start
+V.Local.i1.Declare
+V.Local.sFilter.Declare
+V.Local.sRet.Declare
+
+F.Intrinsic.UI.InvokeWaitDialog("Retrieving Cost of Sales Accounts","WIP Reconciliation [APAC]")
+
+'WIP account in cost of sales (labor and overhead)
+F.Data.DataTable.CreateFromSQL("dtCOGS","conx","select labor_acct as Account, overhead_acct as OH from wip_setup",True)
+F.Data.DataView.Create("dtCOGS","dvCOGS")
+F.Data.DataView.ToDataTableDistinct("dtCOGS","dvCOGS","dtCOS","Account",True)
+F.Data.DataView.ToDataTableDistinct("dtCOGS","dvCOGS","dtCOGSO","OH",True)
+F.Data.DataView.Close("dtCOGS","dvCOGS")
+F.Data.DataTable.Close("dtCOGS")
+
+'Merge the COGS account into 1 datatable
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCOGSO.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtCOGSO(V.Local.i1).OH!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtCOS",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtCOS","Account",V.DataTable.dtCOGSO(V.Local.i1).OH!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtCOGSO")
+
+F.Intrinsic.UI.ChangeWaitStatus("Retrieving all WIP accounts")
+
+'WIP material (taken from material transaction account)
+F.Data.DataTable.CreateFromSQL("dtJ55","conx","select debit_account as Account, debit_account2 as Debit2, debit_account3 as Debit3, debit_account4 as Debit4, debit_account5 as Debit5, debit_account6 as Debit6 from v_inv_gl_accts where code_transaction = 'J55'",True)
+F.Data.DataView.Create("dtJ55","dvJ55")
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL","Account",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPAP","Account",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL2","Debit2",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL3","Debit3",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL4","Debit4",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL5","Debit5",True)
+F.Data.DataView.ToDataTableDistinct("dtJ55","dvJ55","dtWIPGL6","Debit6",True)
+F.Data.DataView.Close("dtJ55","dvJ55")
+F.Data.DataTable.Close("dtJ55")
+
+'Merge the all WIP account into 1 datatable
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL2.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtWIPGL2(V.Local.i1).Debit2!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtWIPGL",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPGL","Account",V.DataTable.dtWIPGL2(V.Local.i1).Debit2!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtWIPGL2")
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL3.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtWIPGL3(V.Local.i1).Debit3!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtWIPGL",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPGL","Account",V.DataTable.dtWIPGL3(V.Local.i1).Debit3!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtWIPGL3")
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL4.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtWIPGL4(V.Local.i1).Debit4!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtWIPGL",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPGL","Account",V.DataTable.dtWIPGL4(V.Local.i1).Debit4!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Select("dtWIPAP",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPAP","Account",V.DataTable.dtWIPGL4(V.Local.i1).Debit4!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtWIPGL4")
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL5.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtWIPGL5(V.Local.i1).Debit5!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtWIPGL",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPGL","Account",V.DataTable.dtWIPGL5(V.Local.i1).Debit5!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtWIPGL5")
+
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL6.RowCount--,1)
+	F.Intrinsic.String.Build("Account = '{0}'",V.DataTable.dtWIPGL6(V.Local.i1).Debit6!FieldValTrim,V.Local.sFilter)
+	F.Data.DataTable.Select("dtWIPGL",V.Local.sFilter,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,=,"***NORETURN***")
+		F.Data.DataTable.AddRow("dtWIPGL","Account",V.DataTable.dtWIPGL6(V.Local.i1).Debit6!FieldValTrim)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Data.DataTable.Close("dtWIPGL6")
+
+'Indirect WO
+F.ODBC.Connection!conx.OpenLocalRecordsetRO("rst","select distinct(rtrim(job)+rtrim(suffix)) as WO, Job, Suffix from v_ind_lbr_accts order by WO desc")
+F.Intrinsic.Control.If(V.ODBC.conx!rst.EOF,=,False)
+	V.Global.sJobIndirect.Set(V.ODBC.conx!rst.FieldVal!Job)
+	V.Global.sSuffixIndirect.Set(V.ODBC.conx!rst.FieldVal!Suffix)
+F.Intrinsic.Control.EndIf
+F.ODBC.conx!rst.Close
+
+'Get inventory UM
+F.Data.Dictionary.CreateFromSQL("dicUM","conx","select part, um_inventory from v_inventory_mstr")
+F.Data.Dictionary.SetDefaultReturn("dicUM","")
+
+F.Intrinsic.UI.CloseWaitDialog
+Program.Sub.RetrieveWIPGL.End
+
+Program.Sub.GridViewProperties.Start
+V.Local.dBegDate.Declare(Date)
+V.Local.dEndDate.Declare(Date)
+V.Local.dDate.Declare(Date)
+V.Local.i1.Declare
+V.Local.iDiff1.Declare
+V.Local.iDiff2.Declare
+V.Local.iMod.Declare
+V.Local.sHeader.Declare
+
+'Get date range
+V.Local.dBegDate.Set(V.Screen.F_Recon!dtpStart.Value)
+V.Local.dEndDate.Set(V.Screen.F_Recon!dtpEnd.Value)
+
+Gui.F_Recon.GsGCRecon.SetGridviewProperty("gvRecon","ShowGroupPanel",True)
+Gui.F_Recon.GsGCRecon.SetGridviewProperty("gvRecon","AllowSort",True)
+Gui.F_Recon.GsGCRecon.SetGridviewProperty("gvRecon","AllowFilter",True)
+Gui.F_Recon.GsGCRecon.SetGridviewProperty("gvRecon","Enableappearanceevenrow",True)
+
+'Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","ShowGroupPanel",True)
+'Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","AllowSort",True)
+'Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","AllowFilter",True)
+'Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","Enableappearanceevenrow",True)
+
+'Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","ShowGroupPanel",True)
+'Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","AllowSort",True)
+'Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","AllowFilter",True)
+'Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","Enableappearanceevenrow",True)
+
+'Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","ShowGroupPanel",True)
+'Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","AllowSort",True)
+'Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","AllowFilter",True)
+'Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","Enableappearanceevenrow",True)
+
+'Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","ShowGroupPanel",True)
+'Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","AllowSort",True)
+'Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","AllowFilter",True)
+'Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","Enableappearanceevenrow",True)
+
+'Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","ShowGroupPanel",True)
+'Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","AllowSort",True)
+'Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","AllowFilter",True)
+'Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LCheck","Visible",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WO","Visible",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Job","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Suffix","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Loc","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","PL","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Project","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP1","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP2","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dWIP","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Inventory","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LaborOH","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LateCost","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","AP","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dGL","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dNet","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Job","CellHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Suffix","CellHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Loc","CellHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","PL","CellHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Project","CellHAlignment","Center")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Job","Fixed","Left")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Suffix","Fixed","Left")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP1","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP2","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dWIP","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Inventory","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LaborOH","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LateCost","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","AP","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dGL","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dNet","DisplayCustomNumeric","##,###,##0.00")
+
+F.Intrinsic.Date.DateAdd("D",-1,V.Screen.F_Recon!dtpStart.Value,V.Local.dDate)
+F.Intrinsic.String.Format(V.Local.dDate,"D MMM YYYY",V.Local.sHeader)
+F.Intrinsic.String.Build("WIP [{0}]",V.Local.sHeader,V.Local.sHeader)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP1","Caption",V.Local.sHeader)
+F.Intrinsic.String.Format(V.Screen.F_Recon!dtpEnd.Value,"D MMM YYYY",V.Local.sHeader)
+F.Intrinsic.String.Build("WIP [{0}]",V.Local.sHeader,V.Local.sHeader)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP2","Caption",V.Local.sHeader)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dWIP","Caption","WIP Net Change")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Inventory","Caption","Inventory Batch")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LaborOH","Caption","Labor/OH Batch")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LateCost","Caption","Late Cost to Job")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","AP","Caption","AP (R10/R11)")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dGL","Caption","GL Net Change")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dNet","Caption","Net Change")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Job","MinWidth","70")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Suffix","MinWidth","70")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Loc","MinWidth","40")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","PL","MinWidth","40")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Project","MinWidth","70")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP1","MinWidth","110")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP2","MinWidth","110")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dWIP","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Inventory","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LaborOH","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LateCost","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","AP","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dGL","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dNet","MinWidth","100")
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dWIP","CellBackColor",V.Color.LtGray)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dGL","CellBackColor",V.Color.LtGray)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","dNet","CellBackColor",V.Color.LtGray)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","WIP2","AllowEdit",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","Inventory","AllowEdit",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LaborOH","AllowEdit",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","LateCost","AllowEdit",False)
+Gui.F_Recon.GsGCRecon.SetColumnProperty("gvRecon","AP","AllowEdit",False)
+
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","WIP1","WIP1SUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","WIP2","WIP2SUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","dWIP","dWIPSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","Inventory","InventorySUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","LaborOH","LaborOHSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","LateCost","LateCostSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","AP","APSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","dGL","dGLSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCRecon.AddSummaryItem("gvRecon","dNet","dNetSUM","SUM","","","##,###,##0.00")
+Program.Sub.GridViewProperties.End
+
+Program.Sub.CutoffDateCheck.Start
+V.Local.dEnd.Declare(Date)
+V.Local.dStart.Declare(Date)
+V.Local.iDiff.Declare
+
+V.Local.dStart.Set(V.Screen.F_Recon!dtpStart.Value)
+V.Local.dEnd.Set(V.Screen.F_Recon!dtpEnd.Value)
+
+F.Intrinsic.Date.DateDiff("D",V.Local.dStart,V.Local.dEnd,V.Local.iDiff)
+F.Intrinsic.Control.If(V.Local.iDiff,<,0)
+	F.Intrinsic.UI.Msgbox("End Date is earlier than or the same as Start Date","WIP Reconciliation [APAC]")
+	F.Intrinsic.Date.DateAdd("D",1,V.Local.dStart,V.Local.dEnd)
+	Gui.F_Recon.dtpEnd.Value(V.Local.dEnd)
+F.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(cmdrefresh_click)
+F.Intrinsic.Control.EndIf
+Program.Sub.CutoffDateCheck.End
+
+Program.Sub.ReconSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+'Total WIP change, GL change, and Net change
+F.Data.DataTable.Compute("dtRecon","SUM(dWIP)","",V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+F.Data.DataTable.Compute("dtRecon","SUM(dGL)","",V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+F.Data.DataTable.Compute("dtRecon","SUM(dNet)","",V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+Program.Sub.ReconSumColumns.End
+
+Program.Sub.GsGCRecon_RowCellClick.Start
+V.Local.dBegDate.Declare(Date)
+V.Local.dEndDate.Declare(Date)
+V.Local.i1.Declare
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+
+F.Intrinsic.String.Build("Job = '{0}' and Suffix = '{1}'",V.DataTable.dtRecon(V.Args.RowIndex).Job!FieldVal,V.DataTable.dtRecon(V.Args.RowIndex).Suffix!FieldVal,V.Local.sFilter)
+
+'Clicking on a column in GsGCRecon
+F.Intrinsic.Control.If(V.Args.Column,=,"WIP2")
+	F.Intrinsic.Control.If(V.DataTable.dtRecon(V.Args.RowIndex).WIP2!FieldVal,>,0)
+		F.Data.DataView.SetFilter("dtJob","dvJob",V.Local.sFilter)
+		F.Intrinsic.Control.CallSub(jobsumcolumns,"sFilter",V.Local.sFilter)
+		Gui.F_Recon.tab1.SetTab(1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"Inventory")
+	F.Intrinsic.Control.If(V.DataTable.dtRecon(V.Args.RowIndex).Inventory!FieldVal,>,0)
+		F.Data.DataView.SetFilter("dtInventory","dvInventory",V.Local.sFilter)
+		F.Intrinsic.Control.CallSub(invsumcolumns,"sFilter",V.Local.sFilter)
+		Gui.F_Recon.tab1.SetTab(2)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"LaborOH")
+	F.Intrinsic.Control.If(V.DataTable.dtRecon(V.Args.RowIndex).LaborOH!FieldVal,>,0)
+		'Get date range
+		V.Local.dBegDate.Set(V.Screen.F_Recon!dtpStart.Value)
+		V.Local.dEndDate.Set(V.Screen.F_Recon!dtpEnd.Value)
+		F.Intrinsic.String.Build("select distinct(lbr_batch_no) as Batch from v_job_detail where lbr_batch_no <> '' and charge_date between '{0}' and '{1}' and job = '{2}' and suffix = '{3}'",V.Local.dBegDate.PervasiveDate,V.Local.dEndDate.PervasiveDate,V.DataTable.dtRecon(V.Args.RowIndex).Job!FieldVal,V.DataTable.dtRecon(V.Args.RowIndex).Suffix!FieldVal,V.Local.sSQL)
+		F.Data.DataTable.CreateFromSQL("dtLabor","conx",V.Local.sSQL)
+		V.Local.sFilter.Set("")
+		F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtLabor.RowCount--,1)
+			F.Intrinsic.Control.If(V.Local.sFilter,=,"")
+				F.Intrinsic.String.Build("Batch = '{0}'",V.DataTable.dtLabor(V.Local.i1).Batch!FieldValTrim,V.Local.sFilter)
+			F.Intrinsic.Control.Else
+				F.Intrinsic.String.Build("{1} OR Batch = '{0}'",V.DataTable.dtLabor(V.Local.i1).Batch!FieldValTrim,V.Local.sFilter,V.Local.sFilter)
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(V.Local.i1)
+		F.Data.DataTable.Close("dtLabor")
+		F.Intrinsic.Control.CallSub(laborsumcolumns,"sFilter",V.Local.sFilter)
+		Gui.F_Recon.tab1.SetTab(3)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"LateCost")
+	F.Intrinsic.Control.If(V.DataTable.dtRecon(V.Args.RowIndex).LateCost!FieldVal,>,0)
+		F.Intrinsic.String.Build("Reference = '{0}-{1}'",V.DataTable.dtRecon(V.Args.RowIndex).Job!FieldVal,V.DataTable.dtRecon(V.Args.RowIndex).Suffix!FieldVal,V.Local.sFilter)
+		F.Data.DataView.SetFilter("dtLateCost","dvLateCost",V.Local.sFilter)
+		F.Intrinsic.Control.CallSub(latesumcolumns,"sFilter",V.Local.sFilter)
+		Gui.F_Recon.tab1.SetTab(4)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.ElseIf(V.Args.Column,=,"AP")
+	F.Intrinsic.Control.If(V.DataTable.dtRecon(V.Args.RowIndex).AP!FieldVal,>,0)
+		F.Data.DataView.SetFilter("dtAP","dvAP",V.Local.sFilter)
+		F.Intrinsic.Control.CallSub(apsumcolumns,"sFilter",V.Local.sFilter)
+		Gui.F_Recon.tab1.SetTab(5)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.GsGCRecon_RowCellClick.End
+
+Program.Sub.SetContextMenus.Start
+'Context menu - right click on every grid
+Gui.F_Recon..ContextMenuCreate("CTXRECON")
+Gui.F_Recon.GsGCRecon.ContextMenuAttach("CTXRECON")
+Gui.F_Recon..ContextMenuAddItem("CTXRECON","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXRECON","Export","ContextMenuExport")
+
+Gui.F_Recon..ContextMenuCreate("CTXJOB")
+Gui.F_Recon.GsGCJob.ContextMenuAttach("CTXJOB")
+Gui.F_Recon..ContextMenuAddItem("CTXJOB","Refresh",0,"Refresh Grid")
+Gui.F_Recon..ContextMenuAddItem("CTXJOB","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXJOB","Refresh","ContextMenuRefresh")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXJOB","Export","ContextMenuExport")
+
+Gui.F_Recon..ContextMenuCreate("CTXINV")
+Gui.F_Recon.GsGCInv.ContextMenuAttach("CTXINV")
+Gui.F_Recon..ContextMenuAddItem("CTXINV","Refresh",0,"Refresh Grid")
+Gui.F_Recon..ContextMenuAddItem("CTXINV","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXINV","Refresh","ContextMenuRefresh")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXINV","Export","ContextMenuExport")
+
+Gui.F_Recon..ContextMenuCreate("CTXLABOR")
+Gui.F_Recon.GsGCLabor.ContextMenuAttach("CTXLABOR")
+Gui.F_Recon..ContextMenuAddItem("CTXLABOR","Refresh",0,"Refresh Grid")
+Gui.F_Recon..ContextMenuAddItem("CTXLABOR","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXLABOR","Refresh","ContextMenuRefresh")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXLABOR","Export","ContextMenuExport")
+
+Gui.F_Recon..ContextMenuCreate("CTXLATE")
+Gui.F_Recon.GsGCLate.ContextMenuAttach("CTXLATE")
+Gui.F_Recon..ContextMenuAddItem("CTXLATE","Refresh",0,"Refresh Grid")
+Gui.F_Recon..ContextMenuAddItem("CTXLATE","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXLATE","Refresh","ContextMenuRefresh")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXLATE","Export","ContextMenuExport")
+
+Gui.F_Recon..ContextMenuCreate("CTXAP")
+Gui.F_Recon.GsGCAP.ContextMenuAttach("CTXAP")
+Gui.F_Recon..ContextMenuAddItem("CTXAP","Refresh",0,"Refresh Grid")
+Gui.F_Recon..ContextMenuAddItem("CTXAP","Export",0,"Export")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXAP","Refresh","ContextMenuRefresh")
+Gui.F_Recon..ContextMenuSetItemEventHandler("CTXAP","Export","ContextMenuExport")
+Program.Sub.SetContextMenus.End
+
+Program.Sub.ContextMenuRefresh.Start
+V.Local.sDT.Declare
+V.Local.sDV.Declare
+
+'Refresh grid by removing filter
+F.Intrinsic.Control.SelectCase(V.Args.MenuName)
+	F.Intrinsic.Control.Case("CTXJOB")
+		V.Local.sDT.Set("dtJob")
+		V.Local.sDV.Set("dvJob")
+		F.Intrinsic.Control.CallSub(RefreshJobDetail)
+	F.Intrinsic.Control.Case("CTXINV")
+		V.Local.sDT.Set("dtInventory")
+		V.Local.sDV.Set("dvInventory")
+		F.Intrinsic.Control.CallSub(RefreshInventory)
+	F.Intrinsic.Control.Case("CTXLABOR")
+		V.Local.sDT.Set("dtLBatch")
+		V.Local.sDV.Set("dvLBatch")
+		F.Intrinsic.Control.CallSub(RefreshLaborBatch)
+	F.Intrinsic.Control.Case("CTXLATE")
+		V.Local.sDT.Set("dtLateCost")
+		V.Local.sDV.Set("dvLateCost")
+		F.Intrinsic.Control.CallSub(RefreshLateCost)
+	F.Intrinsic.Control.Case("CTXAP")
+		V.Local.sDT.Set("dtAP")
+		V.Local.sDV.Set("dvAP")
+		F.Intrinsic.Control.CallSub(RefreshAP)
+F.Intrinsic.Control.EndSelect
+
+F.Data.DataView.SetFilter(V.Local.sDT,V.Local.sDV,"")
+Program.Sub.ContextMenuRefresh.End
+
+Program.Sub.ContextMenuExport.Start
+V.Local.bExist.Declare
+V.Local.sControl.Declare
+V.Local.sFilename.Declare
+V.Local.sRet.Declare
+
+'Export every grid to csv or excel
+F.Intrinsic.Control.SelectCase(V.Args.MenuName)
+	F.Intrinsic.Control.Case("CTXRECON")
+		V.Local.sControl.Set("GsGCRecon")
+	F.Intrinsic.Control.Case("CTXJOB")
+		V.Local.sControl.Set("GsGCJob")
+	F.Intrinsic.Control.Case("CTXINV")
+		V.Local.sControl.Set("GsGCInv")
+	F.Intrinsic.Control.Case("CTXLABOR")
+		V.Local.sControl.Set("GsGCLabor")
+	F.Intrinsic.Control.Case("CTXLATE")
+		V.Local.sControl.Set("GsGCLate")
+	F.Intrinsic.Control.Case("CTXAP")
+		V.Local.sControl.Set("GsGCAP")
+F.Intrinsic.Control.EndSelect
+
+F.Automation.MSExcel.CheckPresence(V.Local.bExist)
+F.Intrinsic.Control.If(V.Local.bExist)
+	F.Intrinsic.UI.ShowSaveFileDialog("","*.xlsx|",V.Local.sFilename)
+	F.Intrinsic.Control.If(V.Local.sFileName,<>,"***CANCEL***")
+		F.Intrinsic.String.Concat(V.Local.sFilename,".xlsx",V.Local.sFilename)
+		Gui.F_Recon.[V.Local.sControl].Export(V.Local.sFilename,"xlsx")
+		F.Intrinsic.Task.ShellExec(0,"",V.Local.sFilename,"","",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Intrinsic.UI.ShowSaveFileDialog("","*.csv|",V.Local.sFilename)
+	F.Intrinsic.Control.If(V.Local.sFileName,<>,"***CANCEL***")
+		F.Intrinsic.String.Concat(V.Local.sFilename,".csv",V.Local.sFilename)
+		Gui.F_Recon.[V.Local.sControl].Export(V.Local.sFilename,"csv")
+		F.Intrinsic.Task.ShellExec(0,"",V.Local.sFilename,"","",1)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+Program.Sub.ContextMenuExport.End
+
+Program.Sub.SetScreenComponents.Start
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.tab1.SetTab(0)
+Gui.F_Recon.GsGCAP.Anchor(15)
+Gui.F_Recon.GsGCInv.Anchor(15)
+Gui.F_Recon.GsGCLabor.Anchor(15)
+Gui.F_Recon.GsGCLate.Anchor(15)
+Gui.F_Recon.GsGCRecon.Anchor(15)
+Gui.F_Recon.GsGCJob.Anchor(15)
+Gui.F_Recon.tab1.Anchor(15)
+Gui.F_Recon.cmdRefresh.Anchor(9)
+Gui.F_Recon.frame1.Anchor(9)
+Program.Sub.SetScreenComponents.End
+
+Program.Sub.JobSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+F.Data.DataTable.Compute("dtJob","SUM(Material)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+F.Data.DataTable.Compute("dtJob","SUM(Labor)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+F.Data.DataTable.Compute("dtJob","SUM(OH)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+Program.Sub.JobSumColumns.End
+
+Program.Sub.InvSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+F.Data.DataTable.Compute("dtInventory","SUM(Amount)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+Program.Sub.InvSumColumns.End
+
+Program.Sub.LaborSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+F.Data.DataTable.Compute("dtLBatch","SUM(Job_Total)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+
+F.Data.DataTable.Compute("dtLBatch","SUM(GL_Total)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+Program.Sub.LaborSumColumns.End
+
+Program.Sub.APSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+F.Data.DataTable.Compute("dtAP","SUM(Amount)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+Program.Sub.APSumColumns.End
+
+Program.Sub.LateSumColumns.Start
+V.Local.fAmount.Declare
+V.Local.sAmount.Declare
+
+F.Data.DataTable.Compute("dtLateCost","SUM(Amount)",V.Args.sFilter,V.Local.fAmount)
+F.Intrinsic.String.Format(V.Local.fAmount,"#,0.00",V.Local.sAmount)
+Program.Sub.LateSumColumns.End
+
+Program.Sub.GSSVersionTableSetup.Start
+V.Local.sGLDetail.Declare
+'Row 1 is for 2016.2 and below
+'Row 2 is for 2017.1 and above
+'GL_DETAIL
+V.Local.sGLDetail.Set("GL_ACCOUNT*!*POST_DATE*!*BATCH_NUM*!*BATCH_LINE*!*AMOUNT*!*DESCR")
+F.Intrinsic.String.Concat(V.Local.sGLDetail,"$!$","GL_NUMBER*!*POST_DATE_SQL*!*BATCH*!*LINE*!*AMOUNT_CMPNY*!*DESCRIPTION",V.Local.sGLDetail)
+
+F.Data.DataTable.CreateFromString("dtGLDetail",V.Local.sGLDetail,"GLAccount*!*PostDate*!*Batch*!*Line*!*Amount*!*Description","String*!*String*!*String*!*String*!*String*!*String","*!*","$!$",True)
+
+Program.Sub.GSSVersionTableSetup.End
+
+Program.Sub.RefreshInventory.Start
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iRem.Declare
+V.Local.sAccountInv.Declare
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+
+Gui.F_Recon.GsGCInv.Visible(False)
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+F.Intrinsic.Control.If(V.DataTable.dtInventory.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtInventory!dvInventory.Exists,=,True)
+		F.Data.DataView.Close("dtInventory","dvInventory")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtInventory")
+F.Intrinsic.Control.EndIf
+
+'Get the debit amount for a distinct job-suffix number from gl_inventory_dtls
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL.RowCount--,1)
+	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+	F.Intrinsic.Control.If(V.DataTable.dtWIPGL.RowCount,>,9)
+		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPGL.RowCount,V.Local.iRem)
+	F.Intrinsic.Control.EndIf
+	'Inventory batch account
+	F.Intrinsic.Control.If(V.Local.sAccountInv.Trim,=,"")
+		F.Intrinsic.String.Build("({0} = '{1}'","A.Account",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountInv)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{2} or {0} = '{1}'","A.Account",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountInv,V.Local.sAccountInv)
+	F.Intrinsic.Control.EndIf
+'			F.Intrinsic.debug.ShowCallerInfo
+	F.Intrinsic.Control.If(V.Local.iRem,=,0)
+		'Inventory batch
+		F.Intrinsic.String.Concat(V.Local.sAccountInv,")",V.Local.sAccountInv)
+'		F.Intrinsic.String.Build("select wo, wo_suffix as suffix, sum(dr_amount) as Dr, sum(cr_amount) as Cr from v_gl_inventory_dtls  where {0} and invc_date between '{1}' and '{2}' group by wo, wo_suffix",V.Local.sAccountInv.Trim,V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+		'TR 12/6/23 We need to link the two queries on WO and suffix in addition to NCMR. If you have multiple dispositions on an NCMR that are remake on new WO, the GL_INV_DETAIL table doesn't link the disposition sequence, only the NCMR number, which causes records to duplicate.
+		F.Intrinsic.String.Build("select Substring(If(Rtrim(A.wo)<>'',A.WO,B.WO),1,6) as Wo, Substring(If(Rtrim(A.wo_suffix)<>'',A.WO_Suffix,A.WO_Suffix),1,3) as suffix, sum(dr_amount) as Dr, sum(cr_amount) as Cr from v_gl_inventory_dtls A Left Join (select Batch, Line, B.WO, B.WO_Suffix from V_GL_INVENTORY_DTLS A Left Join (select job as WO, suffix as WO_Suffix, comments_2, left(right(rtrim(comments_2),16),7) as NCMR from v_job_header where comments_2 like '%Quality Control #:%') B On right(rtrim(A.refer_1),7) = B.NCMR and A.WO = B.WO AND A.WO_SUFFIX = B.WO_SUFFIX where A.description = 'Q55' and {0}) B on A.Batch = B.Batch and A.Line = B.Line where {0} and invc_date between '{1}' and '{2}' group by WO, A.wo_suffix",V.Local.sAccountInv.Trim,V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+		F.Intrinsic.Control.If(V.DataTable.dtInv.Exists,=,False)
+			F.Data.DataTable.CreateFromSQL("dtInv","conx",V.Local.sSQL)
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+			F.Data.DataTable.Merge("dtTemp","dtInv",True,1)
+			F.Data.DataTable.Close("dtTemp")
+		F.Intrinsic.Control.EndIf
+		
+		'Inventory batch data
+'		F.Intrinsic.String.Build("select Batch, post_date as PostDate, Line, Account, (dr_amount-cr_amount) as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(wo_suffix,3) as Suffix, wo_seq as Seq, Part, refer_1 as Description, -1*quantity as Quantity, '' as UM, trans_code as TC from v_gl_inventory_dtls where {2} and invc_date between '{0}' and '{1}' order by Job, Suffix, Seq, ChargeDate",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountInv.Trim,V.Local.sSQL)
+		F.Intrinsic.String.Build("select A.Batch, post_date as PostDate, A.Line, Account, (dr_amount-cr_amount) as Amount, invc_date as ChargeDate, substring(If(Rtrim(left(A.wo,6))<>'',A.WO,B.WO),1,6) as Job, Substring(If(Rtrim(left(A.wo_suffix,3))<>'',A.WO_Suffix,A.WO_Suffix),1,3) as Suffix, wo_seq as Seq, Part, refer_1 as Description, -1*quantity as Quantity, '' as UM, trans_code as TC, Rtrim(If(Rtrim(left(A.wo,6))<>'',A.WO,A.WO))+'-'+Rtrim(If(Rtrim(left(A.wo_suffix,3))<>'',A.WO_Suffix,A.WO_Suffix)) as WO from v_gl_inventory_dtls A Left Join (select Batch, Line, B.WO, B.WO_Suffix from V_GL_INVENTORY_DTLS A Left Join (select job as WO, suffix as WO_Suffix, comments_2, left(right(rtrim(comments_2),16),7) as NCMR from V_job_header where comments_2 like '%Quality Control #:%') B On right(rtrim(A.refer_1),7) = B.NCMR and A.WO = B.WO AND A.WO_SUFFIX = B.WO_SUFFIX where A.description = 'Q55' and {2}) B on A.Batch = B.Batch and A.Line = B.Line where {2} and invc_date between '{0}' and '{1}' order by Job, Suffix, Seq, ChargeDate",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountInv.Trim,V.Local.sSQL)
+		F.Intrinsic.Control.If(V.DataTable.dtInvTemp.Exists,=,False)
+			F.Data.DataTable.CreateFromSQL("dtInvTemp","conx",V.Local.sSQL,True)
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+			F.Data.DataTable.Merge("dtTemp","dtInvTemp",True,1)
+			F.Data.DataTable.Close("dtTemp")
+		F.Intrinsic.Control.EndIf
+'		F.Data.DataTable.AddExpressionColumn("dtInvTemp","WO","String","SUBSTRING(Job,1,6)+'-'+SUBSTRING(suffix,1,3)")
+		
+		V.Local.sAccountInv.Set("")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+Gui.F_Recon.lblProgress.Caption("Retrieve inventory batches data")
+Gui.F_Recon.progressBar1.Value(25)
+
+'Create dictionary to update data from inventory WIP in dtRecon
+F.Intrinsic.Control.If(V.DataTable.dtInv.Exists)
+	F.Data.DataTable.AddExpressionColumn("dtInv","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+	F.Data.DataTable.AddExpressionColumn("dtInv","Amount","Float","Dr-Cr")
+	F.Data.Dictionary.CreateFromDataTable("dicInv","dtInv","Job","Amount")
+F.Intrinsic.Control.Else
+	F.Data.Dictionary.Create("dicInv")
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.SetDefaultReturn("dicInv",0)
+F.Data.DataTable.FillFromDictionary("dtRecon","dicInv","WO","Inventory")
+'F.Intrinsic.Debug.ShowCallerInfo
+F.Intrinsic.Control.If(V.DataTable.dtInv.Exists)
+	F.Data.DataTable.Close("dtInv")
+F.Intrinsic.Control.EndIf
+F.Data.Dictionary.Close("dicInv")
+
+Gui.F_Recon.lblProgress.Caption("Update Reconciliation grid")
+Gui.F_Recon.progressBar1.Value(50)
+
+'Prepare inventory detail data for grid display
+F.Data.Linq.Join("InnerJoin","datatable","dtInvTemp*!*J","datatable","dtRecon*!*W","W.Job=J.Job AND W.Suffix=J.Suffix","J.Batch*!*J.PostDate*!*J.Line*!*J.Account*!*J.Amount*!*J.ChargeDate*!*J.Job*!*J.Suffix*!*J.Seq*!*J.Part*!*J.Description*!*J.Quantity*!*J.UM*!*J.TC","","","","dtInventory",True)
+'F.Data.Linq.Join("InnerJoin","datatable","dtInvTemp*!*J","datatable","dtRecon*!*W","W.WO=J.WO","J.Batch*!*J.PostDate*!*J.Line*!*J.Account*!*J.Amount*!*J.ChargeDate*!*J.Job*!*J.Suffix*!*J.Seq*!*J.Part*!*J.Description*!*J.Quantity*!*J.UM*!*J.TC","","","","dtInventory",True)
+'F.Intrinsic.Debug.ShowCallerInfo
+
+'If join returns nothing, clone datatable
+F.Intrinsic.Control.If(V.DataTable.dtInventory.RowCount,=,0)
+	F.Data.DataTable.Close("dtInventory")
+	F.Data.DataTable.Clone("dtInvTemp","dtInventory",True)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtInvTemp")
+
+Gui.F_Recon.lblProgress.Caption("Retrieve inventory batches detail data")
+Gui.F_Recon.progressBar1.Value(75)
+
+F.Data.DataTable.FillFromDictionary("dtInventory","dicUM","Part","UM")
+
+'Set gridview from dataview
+F.Data.DataView.Create("dtInventory","dvInventory")
+Gui.F_Recon.GsGCInv.AddGridviewFromDataview("gvInv","dtInventory","dvInventory")
+Gui.F_Recon.GsGCInv.MainView("gvInv")
+
+Gui.F_Recon.lblProgress.Caption("Setting up inventory grid")
+Gui.F_Recon.progressBar1.Value(95)
+
+Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","ShowGroupPanel",True)
+Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","AllowSort",True)
+Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","AllowFilter",True)
+Gui.F_Recon.GsGCInv.SetGridviewProperty("gvInv","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Batch","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","PostDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Line","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Account","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Amount","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","ChargeDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Job","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Suffix","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Seq","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Part","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Description","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Quantity","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","UM","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","TC","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Batch","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","PostDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Line","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","ChargeDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Job","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Suffix","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Seq","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","UM","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","TC","CellHAlignment","Center")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Batch","Caption","Batch No.")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","PostDate","Caption","Post Date")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Line","Caption","Batch Line")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Account","Caption","GL Account")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Amount","Caption","Amount")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","ChargeDate","Caption","Charge Date")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Job","Caption","Job")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Suffix","Caption","Suffix")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Seq","Caption","Sequence")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Part","Caption","Part Number")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Description","Caption","Description")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Quantity","Caption","Quantity")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Batch","MinWidth","70")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","PostDate","MinWidth","90")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Line","MinWidth","70")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Account","MinWidth","110")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Amount","MinWidth","100")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","ChargeDate","MinWidth","90")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Job","MinWidth","70")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Suffix","MinWidth","60")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Seq","MinWidth","70")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Part","MinWidth","130")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Description","MinWidth","230")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Quantity","MinWidth","90")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","UM","MinWidth","40")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","TC","MinWidth","40")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","PostDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","ChargeDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Amount","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCInv.SetColumnProperty("gvInv","Quantity","DisplayCustomNumeric","##,###,##0.00000")
+
+Gui.F_Recon.GsGCInv.AddSummaryItem("gvInv","Amount","InvSUM","SUM","","","##,###,##0.00")
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.GsGCInv.Visible(True)
+Program.Sub.RefreshInventory.End
+
+Program.Sub.RefreshJobDetail.Start
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+
+Gui.F_Recon.GsGCJob.Visible(False)
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+F.Intrinsic.Control.If(V.DataTable.dtJob.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtJob!dvJob.Exists,=,True)
+		F.Data.DataView.Close("dtJob","dvJob")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtJob")
+F.Intrinsic.Control.EndIf
+
+'WIP 1 (up to Beginning Date)
+'Get the labor and OH amount for a distinct job-suffix number from job_detail
+'F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date < '{0}' and EDITED_WO_DTL <> 'R' group by job, suffix",V.Global.dBegDate.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date < '{0}' group by job, suffix",V.Global.dBegDate.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+F.Data.Dictionary.CreateFromDataTable("dicWIP","dtW","Job","Amount")
+F.Data.DataTable.Close("dtW")
+
+F.Data.Dictionary.SetDefaultReturn("dicWIP",0)
+F.Data.DataTable.FillFromDictionary("dtRecon","dicWIP","WO","WIP1")
+F.Data.Dictionary.Close("dicWIP")
+
+Gui.F_Recon.lblProgress.Caption("Update WIP data in Reconciliation grid")
+Gui.F_Recon.progressBar1.Value(25)
+
+'WIP 2 (up to End Date)
+'Get the labor and OH amount for a distinct job-suffix number from job_detail
+'F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date <= '{0}' and EDITED_WO_DTL <> 'R' group by job, suffix",V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date <= '{0}' group by job, suffix",V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+F.Data.Dictionary.CreateFromDataTable("dicWIP","dtW","Job","Amount")
+F.Data.DataTable.Close("dtW")
+
+F.Data.Dictionary.SetDefaultReturn("dicWIP",0)
+F.Data.DataTable.FillFromDictionary("dtRecon","dicWIP","WO","WIP2")
+F.Data.Dictionary.Close("dicWIP")
+
+Gui.F_Recon.lblProgress.Caption("Update WIP data in Reconciliation grid")
+Gui.F_Recon.progressBar1.Value(30)
+
+'Job Detail data for grid display
+'F.Intrinsic.String.Build("select Job, Suffix, Seq, charge_date as ChargeDate, LMO, Part, case lmo when 'L' then employee else description end as Description, case lmo when 'M' then amount_labor when 'O' then amount_labor when 'Z' then amount_labor else 0 end as Material, case lmo when 'L' then amount_labor else 0 end as Labor, amt_overhead as OH, lbr_batch_no as Batch from v_job_detail where charge_date between '{0}' and '{1}' and EDITED_WO_DTL <> 'R' order by job, suffix, seq, charge_date",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Intrinsic.String.Build("select Job, Suffix, Seq, charge_date as ChargeDate, LMO, EDITED_WO_DTL AS Edited, Part, case lmo when 'L' then employee else description end as Description, case lmo when 'M' then amount_labor when 'O' then amount_labor when 'Z' then amount_labor else 0 end as Material, case lmo when 'L' then amount_labor else 0 end as Labor, amt_overhead as OH, lbr_batch_no as Batch from v_job_detail where charge_date between '{0}' and '{1}' AND NOT(LMO = 'L' AND EDITED_WO_DTL = 'R') order by job, suffix, seq, charge_date",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtJobTemp","conx",V.Local.sSQL,True)	
+F.Data.Linq.Join("InnerJoin","datatable","dtJobTemp*!*J","datatable","dtRecon*!*W","J.Job=W.Job AND J.Suffix=W.Suffix","J.Job*!*J.Suffix*!*J.Seq*!*J.ChargeDate*!*J.LMO*!*J.Part*!*J.Description*!*J.Material*!*J.Labor*!*J.OH*!*J.Batch*!*J.EDITED","","","","dtJob",True)
+'If join returns nothing, clone datatable
+F.Intrinsic.Control.If(V.DataTable.dtJob.RowCount,=,0)
+	F.Data.DataTable.Close("dtJob")
+	F.Data.DataTable.Clone("dtJobTemp","dtJob",True)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtJobTemp")
+
+Gui.F_Recon.lblProgress.Caption("Retrieve job detail data from the selected date range")
+Gui.F_Recon.progressBar1.Value(60)
+
+'Set gridview from dataview
+F.Data.DataTable.AddExpressionColumn("dtJob","TotalCost","Float","Material+Labor+OH")
+F.Data.DataView.Create("dtJob","dvJob")
+Gui.F_Recon.GsGCJob.AddGridviewFromDataview("gvJob","dtJob","dvJob")
+Gui.F_Recon.GsGCJob.MainView("gvJob")
+
+Gui.F_Recon.lblProgress.Caption("Setting up job detail grid")
+Gui.F_Recon.progressBar1.Value(90)
+
+Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","ShowGroupPanel",True)
+Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","AllowSort",True)
+Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","AllowFilter",True)
+Gui.F_Recon.GsGCJob.SetGridviewProperty("gvJob","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Job","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Suffix","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Seq","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","ChargeDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","LMO","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Part","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Description","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Material","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Labor","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","OH","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Batch","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","TotalCost","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Job","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Suffix","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Seq","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","ChargeDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","LMO","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Batch","CellHAlignment","Center")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Job","Caption","Job")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Suffix","Caption","Suffix")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Seq","Caption","Sequence")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","ChargeDate","Caption","Charge Date")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Part","Caption","Part Number/ Reference")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Description","Caption","Description")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Material","Caption","Material Cost")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Labor","Caption","Labor Cost")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","OH","Caption","Overhead Cost")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Batch","Caption","Batch No.")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","TotalCost","Caption","Total Cost")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Job","MinWidth","70")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Suffix","MinWidth","60")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Seq","MinWidth","70")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","ChargeDate","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","LMO","MinWidth","40")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Part","MinWidth","160")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Description","MinWidth","250")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Material","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Labor","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","OH","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Batch","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","TotalCost","MinWidth","100")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","ChargeDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Material","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Labor","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","OH","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","TotalCost","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Job","Fixed","Left")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Suffix","Fixed","Left")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","Seq","Fixed","Left")
+Gui.F_Recon.GsGCJob.SetColumnProperty("gvJob","TotalCost","CellBackColor",V.Color.LtGray)
+
+Gui.F_Recon.GsGCJob.AddSummaryItem("gvJob","Material","MaterialSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCJob.AddSummaryItem("gvJob","Labor","LaborSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCJob.AddSummaryItem("gvJob","OH","OHSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCJob.AddSummaryItem("gvJob","TotalCost","TotalCostSUM","SUM","","","##,###,##0.00")
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.GsGCJob.Visible(True)
+Program.Sub.RefreshJobDetail.End
+
+Program.Sub.RefreshLateCost.Start
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iRem.Declare
+V.Local.sAccountLate.Declare
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+V.Local.sTable.Declare
+
+Gui.F_Recon.GsGCLate.Visible(False)
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+F.Intrinsic.Control.If(V.DataTable.dtLateCost.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtLateCost!dvLateCost.Exists,=,True)
+		F.Data.DataView.Close("dtLateCost","dvLateCost")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtLateCost")
+F.Intrinsic.Control.EndIf
+
+'Get the amount for a distinct job-suffix number from gl_detail with batch M
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL.RowCount--,1)
+	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+	F.Intrinsic.Control.If(V.DataTable.dtWIPGL.RowCount,>,9)
+		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPGL.RowCount,V.Local.iRem)
+	F.Intrinsic.Control.EndIf
+	
+	'Late cost account
+	F.Intrinsic.Control.If(V.Local.sAccountLate.Trim,=,"")
+		F.Intrinsic.String.Build("({0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountLate)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{2} or {0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountLate,V.Local.sAccountLate)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+F.Intrinsic.String.Concat(V.Local.sAccountLate,")",V.Local.sAccountLate)
+
+F.Intrinsic.Control.If(V.Global.iVersion,=,1)
+	V.Local.sTable.Set("v_gl_journal_dtl")
+F.Intrinsic.Control.Else
+	V.Local.sTable.Set("v_gl_detail")
+F.Intrinsic.Control.EndIf
+
+'Create dictionary to update data of late cost WIP in dtRecon
+F.Intrinsic.String.Build("select substring({6},20,10), sum({3}) from {7} where {4} like 'M%' and reference <> '' and {5} between '{0}' and '{1}' and {2} group by {6}",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountLate.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sTable.Trim,V.Local.sSQL)
+F.Data.Dictionary.CreateFromSQL("dicLate","conx",V.Local.sSQL)
+F.Data.Dictionary.SetDefaultReturn("dicLate",0)
+F.Data.DataTable.FillFromDictionary("dtRecon","dicLate","WO","LateCost")
+F.Data.Dictionary.Close("dicLate")
+
+Gui.F_Recon.lblProgress.Caption("Update late cost data in Reconciliation grid")
+Gui.F_Recon.progressBar1.Value(30)
+
+'Prepare late cost detail data for grid display
+F.Intrinsic.String.Build("select {3} as Batch, {4} as PostDate, {5} as Line, {6} as Account, {7} as Amount, substring({8},20,10) as Reference from {9} where {3} like 'M%' and {4} between '{0}' and '{1}' and {2} order by Batch, PostDate, Line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountLate.Trim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Line!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Local.sTable.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtLateTemp","conx",V.Local.sSQL,True)
+F.Data.Linq.Join("InnerJoin","datatable","dtLateTemp*!*J","datatable","dtRecon*!*W","W.WO=J.Reference","J.Batch*!*J.PostDate*!*J.Line*!*J.Account*!*J.Amount*!*J.Reference","","","","dtLateCost",True)
+'If join returns nothing, clone datatable
+F.Intrinsic.Control.If(V.DataTable.dtLateCost.RowCount,=,0)
+	F.Data.DataTable.Close("dtLateCost")
+	F.Data.DataTable.Clone("dtLateTemp","dtLateCost",True)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtLateTemp")
+
+Gui.F_Recon.lblProgress.Caption("Retrieve late cost detail data")
+Gui.F_Recon.progressBar1.Value(60)
+
+'Set gridview from dataview
+F.Data.DataView.Create("dtLateCost","dvLateCost")
+Gui.F_Recon.GsGCLate.AddGridviewFromDataview("gvLate","dtLateCost","dvLateCost")
+Gui.F_Recon.GsGCLate.MainView("gvLate")
+
+Gui.F_Recon.lblProgress.Caption("Setting up late cost grid")
+Gui.F_Recon.progressBar1.Value(90)
+
+Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","ShowGroupPanel",True)
+Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","AllowSort",True)
+Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","AllowFilter",True)
+Gui.F_Recon.GsGCLate.SetGridviewProperty("gvLate","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Batch","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","PostDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Line","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Account","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Amount","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Reference","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Batch","CellHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","PostDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Line","CellHAlignment","Center")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Batch","Caption","Batch No.")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","PostDate","Caption","Post Date")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Line","Caption","Batch Line")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Account","Caption","GL Account")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Amount","Caption","Amount")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Reference","Caption","Reference")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Batch","MinWidth","70")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","PostDate","MinWidth","90")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Line","MinWidth","70")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Account","MinWidth","110")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Amount","MinWidth","100")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Reference","MinWidth","150")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","PostDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCLate.SetColumnProperty("gvLate","Amount","DisplayCustomNumeric","##,###,##0.00")
+
+Gui.F_Recon.GsGCLate.AddSummaryItem("gvLate","Amount","LateSUM","SUM","","","##,###,##0.00")
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.GsGCLate.Visible(True)
+Program.Sub.RefreshLateCost.End
+
+Program.Sub.RefreshAP.Start
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iRem.Declare
+V.Local.sAccountAP.Declare
+V.Local.sFilter.Declare
+V.Local.sSQL.Declare
+
+Gui.F_Recon.GsGCAP.Visible(False)
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+F.Intrinsic.Control.If(V.DataTable.dtAP.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtAP!dvAP.Exists,=,True)
+		F.Data.DataView.Close("dtAP","dvAP")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtAP")
+F.Intrinsic.Control.EndIf
+
+'F.Data.DataTable.CreateFromSQL("dtWipTemp","conx","select GL_Number as Account from GL_AP_Detail WHere tran_type = '07' and WO <> '' Group by GL_Number",True)
+'F.Intrinsic.Control.If(V.DataTable.dtWIPTemp.RowCount,=,0)
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPAP.RowCount--,1)
+'		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'		
+'		F.Intrinsic.Control.If(V.DataTable.dtWIPAP.RowCount,>,9)
+'			F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+'		F.Intrinsic.Control.Else
+'			F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPAP.RowCount,V.Local.iRem)
+'		F.Intrinsic.Control.EndIf
+'		
+'		F.Intrinsic.Control.If(V.Local.sAccountAP.Trim,=,"")
+'			F.Intrinsic.String.Build("({0} = '{1}'","gl_number",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP)
+'		F.Intrinsic.Control.Else
+'			F.Intrinsic.String.Build("{2} or {0} = '{1}'","gl_number",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP,V.Local.sAccountAP)
+'		F.Intrinsic.Control.EndIf
+'			
+'		F.Intrinsic.Control.If(V.Local.iRem,=,0)
+'			F.Intrinsic.String.Concat(V.Local.sAccountAP,")",V.Local.sAccountAP)
+'		
+''			F.Intrinsic.String.Build("select wo, suffix, sum(cost_invoiced) as Amount from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or (gl_trns_type = '04' and qty_invoiced = 0)) and {2} group by wo, suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+''			F.Intrinsic.String.Build("select A.wo, A.suffix, sum(if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced)) as Amount from v_invc_dtl_vat A Inner join v_gl_ap_Detail B On A.Batch_Num = B.Batch and Cast(A.Batch_Line as Int) = B.Line where A.invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by A.wo, A.suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+
+'			'Changed SQL script to get AP detail records from INVC_DTL_VAT to GL_AP_DETAILS tables since the old table sometimes doesn't write correct WIP records (Deni Y. 05-04-2023)
+'			F.Intrinsic.String.Build("select wo, wo_suffix as suffix, sum(if(tran_type = '4', amount_cmpny as Amount from v_gl_ap_Detail where post_date_sql between '{0}' and '{1}' and (tran_type = '7' or tran_type = '10' or tran_type = '04') and {2} group by wo, wo_suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)			
+''			F.Intrinsic.Debug.ShowCallerInfo
+'			F.Intrinsic.Control.If(V.DataTable.dtAPD.Exists,=,False)
+'				F.Data.DataTable.CreateFromSQL("dtAPD","conx",V.Local.sSQL)
+'			F.Intrinsic.Control.Else
+'				F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'				F.Data.DataTable.Merge("dtTemp","dtAPD",True,1)
+'				F.Data.DataTable.Close("dtTemp")
+'			F.Intrinsic.Control.EndIf
+'		
+'	'		F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, ext_cost as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(suffix,3) as Suffix, Seq, Receiver, po_no as PO, po_line as POLine, qty as Quantity, cost_invoiced as UnitCost from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or (gl_trns_type = '04' and qty_invoiced = 0)) and {2} order by batch_num, post_date, batch_line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+''			F.Intrinsic.String.Build("select batch_num as Batch, A.post_date as PostDate, batch_line as Line, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,ext_cost),ext_cost) as Amount, A.invc_date as ChargeDate, left(A.wo,6) as Job, left(A.suffix,3) as Suffix, A.Seq, A.Receiver, po_no as PO, A.po_line as POLine, qty as Quantity, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced) as UnitCost from v_invc_dtl_vat A Inner join v_gl_ap_Detail B On A.Batch_Num = B.Batch and Cast(A.Batch_Line as Int) = B.Line where A.invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by batch_num, A.post_date, batch_line, Amount, A.invc_date, Job, Suffix, A.Seq, A.Receiver, po_no, A.po_line, qty, cost_invoiced order by batch_num, A.post_date, batch_line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			F.Intrinsic.String.Build("select Batch, A.post_date_sql as PostDate, line as Line, amount_cmpny as Amount, A.invc_date_sql as ChargeDate, left(wo,6) as Job, left(wo_suffix,3) as Suffix, wo_seq as Seq, Receiver, po_num as PO, po_line as POLine, Quantity, amount_cmpny as UnitCost from v_gl_ap_Detail where post_date_sql between '{0}' and '{1}' and (tran_type = '7' or tran_type = '10' or gl_trns_type = '4') and {2} group by batch, post_date_sql, line, Amount, invc_date_sql, wo, wo_suffix, wo_seq, Receiver, po_no, po_line, quantity, cost_invoiced order by batch, post_date_sql, line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			'f.Intrinsic.Debug.ShowCallerInfo
+'			F.Intrinsic.Control.If(V.DataTable.dtAPTemp.Exists,=,False)
+'				F.Data.DataTable.CreateFromSQL("dtAPTemp","conx",V.Local.sSQL,True)
+'			F.Intrinsic.Control.Else
+'				F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'				F.Data.DataTable.Merge("dtTemp","dtAPTemp",True,1)
+'				F.Data.DataTable.Close("dtTemp")
+'			F.Intrinsic.Control.EndIf
+'			V.Local.sAccountAP.Set("")
+'		F.Intrinsic.Control.EndIf
+'	F.Intrinsic.Control.Next(V.Local.i1)
+
+'F.Intrinsic.Control.Else
+	'F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPAP.RowCount--,1)
+'	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPTemp.RowCount--,1)
+	F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtWIPGL.RowCount--,1)
+		F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+'		F.Intrinsic.Control.If(V.DataTable.dtWIPAP.RowCount,>,9)
+'		F.Intrinsic.Control.If(V.DataTable.dtWIPTemp.RowCount,>,9)
+'			F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+'		F.Intrinsic.Control.Else
+'			F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPAP.RowCount,V.Local.iRem)
+'			F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtWIPTemp.RowCount,V.Local.iRem)
+'		F.Intrinsic.Control.EndIf
+		
+		F.Intrinsic.Control.If(V.Local.sAccountAP.Trim,=,"")
+'			F.Intrinsic.String.Build("({0} = '{1}'","gl_Account",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP)
+			F.Intrinsic.String.Build("({0} = '{1}'","gl_number",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP)
+		F.Intrinsic.Control.Else
+'			F.Intrinsic.String.Build("{2} or {0} = '{1}'","gl_Account",V.DataTable.dtWIPAP(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP,V.Local.sAccountAP)
+			F.Intrinsic.String.Build("{2} or {0} = '{1}'","gl_number",V.DataTable.dtWIPGL(V.Local.i1).Account!FieldValTrim,V.Local.sAccountAP,V.Local.sAccountAP)			
+		F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Next(V.Local.i1)	
+		'F.Intrinsic.Control.If(V.Local.iRem,=,0)
+			F.Intrinsic.String.Concat(V.Local.sAccountAP,")",V.Local.sAccountAP)
+			
+			F.Intrinsic.Control.If(V.DataTable.dtAPD.Exists,=,True)
+				F.Data.DataTable.Close("dtAPD")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.Control.If(V.DataTable.dtAPTemp.Exists,=,True)
+				F.Data.DataTable.Close("dtAPTemp")
+			F.Intrinsic.Control.EndIf
+		
+'			F.Intrinsic.String.Build("select wo, suffix, sum(cost_invoiced) as Amount from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by wo, suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			F.Intrinsic.String.Build("select A.wo, A.suffix, sum(if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced)) as Amount from v_invc_dtl_vat A Inner join (Select * From v_gl_ap_Detail where invc_date_sql between '{0}' and '{1}') B On A.Batch_Num = B.Batch and Cast(A.Batch_Line as Int) = B.Line where A.invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by A.wo, A.suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			F.Intrinsic.String.Build("select Cast(Batch_Line as Int) as Line, Batch_Num, WO, Suffix, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced) as Amount from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2}",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+
+			F.Intrinsic.String.Build("select Line, Batch, WO, WO_Suffix as suffix, amount_cmpny as Amount from v_GL_AP_Detail where invc_date_sql between '{0}' and '{1}' and (tran_type = '7' or tran_type = '10' or tran_type = '4') and {2} ",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+			'F.Intrinsic.Debug.ShowCallerInfo
+			F.Data.DataTable.CreateFromSQL("dtAPD","conx",V.Local.sSQL)
+			F.Intrinsic.String.Build("select WO, WO_Suffix as suffix, sum(amount_cmpny) as Total from v_GL_AP_Detail where invc_date_sql between '{0}' and '{1}' and (tran_type = '7' or tran_type = '10' or tran_type = '4') and {2} group by WO, Suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+			F.Data.Datatable.CreateFromSQL("dtTotal","conx",V.Local.sSQL)
+'			F.Intrinsic.String.Build("select Batch, Cast(Line as Int) as Line from v_GL_AP_Detail where invc_date_sql between '{0}' and '{1}'",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)		
+'			F.Data.DataTable.CreateFromSQL("dtAP2","conx",V.Local.sSQL)
+'			F.Data.Linq.Join("InnerJoin","datatable","dtAP1*!*J","datatable","dtAP2*!*W","W.Batch=J.batch_num AND W.Line=J.Line","J.WO AS WO*!*J.Suffix AS Suffix*!* Sum(J.Amount) as Amount","","J.WO,J.Suffix","","dtAPD",True)
+'			F.Data.DataTable.Close("dtAP1")
+'			F.Data.DataTable.Close("dtAP2")
+			
+'			F.Intrinsic.Control.If(V.DataTable.dtAPD.Exists,=,False)
+'				F.Data.DataTable.CreateFromSQL("dtAPD","conx",V.Local.sSQL)
+'			F.Intrinsic.Control.Else
+'				F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'				F.Data.DataTable.Merge("dtTemp","dtAPD",True,1)
+'				F.Data.DataTable.Close("dtTemp")
+'			F.Intrinsic.Control.EndIf
+		
+	'		F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, ext_cost as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(suffix,3) as Suffix, Seq, Receiver, po_no as PO, po_line as POLine, qty as Quantity, cost_invoiced as UnitCost from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or (gl_trns_type = '04' and qty_invoiced = 0)) and {2} order by batch_num, post_date, batch_line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			F.Intrinsic.String.Build("select batch_num as Batch, A.post_date as PostDate, batch_line as Line, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,ext_cost),ext_cost) as Amount, A.invc_date as ChargeDate, left(A.wo,6) as Job, left(A.suffix,3) as Suffix, A.Seq, A.Receiver, po_no as PO, A.po_line as POLine, qty as Quantity, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced) as UnitCost from v_invc_dtl_vat A Inner join (Select * From v_gl_ap_Detail where invc_date_sql between '{0}' and '{1}') B On A.Batch_Num = B.Batch and Cast(A.Batch_Line as Int) = B.Line where A.invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by batch_num, A.post_date, batch_line, Amount, A.invc_date, Job, Suffix, A.Seq, A.Receiver, po_no, A.po_line, qty, cost_invoiced order by batch_num, A.post_date, batch_line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			f.Intrinsic.Debug.ShowCallerInfo
+'			F.Intrinsic.Control.If(V.DataTable.dtAPTemp.Exists,=,False)
+'				F.Data.DataTable.CreateFromSQL("dtAPTemp","conx",V.Local.sSQL,True)
+'			F.Intrinsic.Control.Else
+'				F.Data.DataTable.CreateFromSQL("dtTemp","conx",V.Local.sSQL)
+'				F.Data.DataTable.Merge("dtTemp","dtAPTemp",True,1)
+'				F.Data.DataTable.Close("dtTemp")
+'			F.Intrinsic.Control.EndIf
+
+			F.Intrinsic.Control.If(V.DataTable.dtAPTemp1.Exists,=,True)
+				F.Data.DataTable.Close("dtAPTemp1")
+			F.Intrinsic.Control.EndIf
+			
+			F.Intrinsic.Control.If(V.DataTable.dtAPTemp2.Exists,=,True)
+				F.Data.DataTable.Close("dtAPTemp2")
+			F.Intrinsic.Control.EndIf
+			
+'			F.Intrinsic.String.Build("select batch_num as Batch, post_date as PostDate, batch_line as Line, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,ext_cost),ext_cost) as Amount, invc_date as ChargeDate, left(wo,6) as Job, left(suffix,3) as Suffix, Seq, Receiver, po_no as PO, po_line as POLine, qty as Quantity, if(gl_trns_type = '04',if(ext_cost<>ext_std_cost,ext_cost-ext_std_cost,cost_invoiced),cost_invoiced) as UnitCost, Cast(batch_line as Int) as Line2 from v_invc_dtl_vat where invc_date between '{0}' and '{1}' and (gl_trns_type = '07' or gl_trns_type = '10' or gl_trns_type = '04') and {2} group by batch_num, post_date, batch_line, Amount, invc_date, Job, Suffix, Seq, Receiver, po_no, po_line, qty, cost_invoiced order by batch_num, post_date, batch_line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)
+'			F.Data.DataTable.CreateFromSQL("dtAPTemp1","conx",V.Local.sSQL,True)
+			F.Intrinsic.String.Build("select Batch, Cast(Line as Int) as Line, post_date_sql as PostDate, Line, amount_cmpny as Amount, invc_date_sql as ChargeDate, left(wo,6) as Job, left(wo_suffix,3) as Suffix, WO_Seq as Seq, Receiver, po_num as PO, po_line as POLine, Quantity, Amount_Cmpny as UnitCost from v_GL_AP_Detail where invc_date_sql between '{0}' and '{1}' and (tran_type = '7' or tran_type = '10' or tran_type = '4') and {2} and job <> '' group by batch, post_date_sql, line, Amount, invc_date_sql, Job, Suffix, Seq, Receiver, po, po_line, quantity, unitcost order by batch, post_date_sql, line",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountAP,V.Local.sSQL)		
+			F.Data.DataTable.CreateFromSQL("dtAPTemp","conx",V.Local.sSQL,True)
+'			F.Intrinsic.Debug.ShowCallerInfo
+			'F.Data.DataTable.CreateFromSQL("dtAP3","conx",V.Local.sSQL)			
+'			F.Data.Linq.Join("InnerJoin","datatable","dtAPTemp1*!*J","datatable","dtAPTemp2*!*W","W.Batch=J.Batch AND W.Line=J.Line2","J.Batch*!* J.PostDate*!* J.Line*!* J.Amount*!* J.ChargeDate*!* J.Job*!* J.Suffix*!* J.Seq*!* J.Receiver*!* J.PO*!* J.POLine*!* J.Quantity*!* J.UnitCost","","","","dtAPTemp",True)
+			
+			'V.Local.sAccountAP.Set("")
+		'F.Intrinsic.Control.EndIf
+	'F.Intrinsic.Debug.ShowCallerInfo
+'F.Intrinsic.Control.EndIf
+
+'F.Data.DataTable.Close("dtWipTemp")
+
+Gui.F_Recon.lblProgress.Caption("Retrieve AP accrual data")
+Gui.F_Recon.progressBar1.Value(25)
+'working
+
+'Create dictionary to update data of AP WIP in dtRecon
+F.Data.DataTable.AddExpressionColumn("dtTotal","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+F.Data.Dictionary.CreateFromDataTable("dicAP","dtTotal","Job","Total")
+F.Data.DataTable.Close("dtAPD")
+F.Data.Dictionary.SetDefaultReturn("dicAP",0)
+
+F.Data.DataTable.FillFromDictionary("dtRecon","dicAP","WO","AP")
+F.Data.Dictionary.Close("dicAP")
+F.Data.Datatable.Close("dtTotal")
+
+Gui.F_Recon.lblProgress.Caption("Update AP accrual in Reconciliation grid")
+Gui.F_Recon.progressBar1.Value(50)
+'F.Intrinsic.Debug.ShowCallerInfo
+'Prepare AP detail data for grid display
+F.Data.Linq.Join("InnerJoin","datatable","dtAPTemp*!*J","datatable","dtRecon*!*W","W.Job=J.Job AND W.Suffix=J.Suffix","J.Batch AS Batch*!*J.PostDate AS PostDate*!*J.Line AS Line*!*J.Amount AS Amount*!*J.ChargeDate AS ChargeDate*!*J.Job AS Job*!*J.Suffix AS Suffix*!*J.Seq AS Seq*!*J.Receiver AS Receiver*!*J.PO AS PO*!*J.POLine AS POLine*!*J.Quantity AS Quantity*!*J.UnitCost AS UnitCost","","","","dtAP",True)
+'If join returns nothing, clone datatable
+F.Intrinsic.Control.If(V.DataTable.dtAP.RowCount,=,0)
+	F.Data.DataTable.Close("dtAP")
+	F.Data.DataTable.Clone("dtAPTemp","dtAP",True)
+F.Intrinsic.Control.EndIf
+F.Data.DataTable.Close("dtAPTemp")
+'F.Intrinsic.Debug.ShowCallerInfo
+Gui.F_Recon.lblProgress.Caption("Retrieve AP accrual detail data")
+Gui.F_Recon.progressBar1.Value(75)
+
+'Set gridview from dataview
+F.Data.DataView.Create("dtAP","dvAP")
+Gui.F_Recon.GsGCAP.AddGridviewFromDataview("gvAP","dtAP","dvAP")
+Gui.F_Recon.GsGCAP.MainView("gvAP")
+
+Gui.F_Recon.lblProgress.Caption("Setting up AP grid")
+Gui.F_Recon.progressBar1.Value(95)
+
+Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","ShowGroupPanel",True)
+Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","AllowSort",True)
+Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","AllowFilter",True)
+Gui.F_Recon.GsGCAP.SetGridviewProperty("gvAP","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Batch","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PostDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Line","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Amount","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","ChargeDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Job","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Suffix","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Seq","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Receiver","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PO","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","POLine","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Quantity","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","UnitCost","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Batch","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PostDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Line","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","ChargeDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Job","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Suffix","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Seq","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Receiver","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PO","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","POLine","CellHAlignment","Center")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Batch","Caption","Batch No.")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PostDate","Caption","Post Date")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Line","Caption","Batch Line")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Amount","Caption","Amount")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","ChargeDate","Caption","Received Date")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Job","Caption","Job")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Suffix","Caption","Suffix")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Seq","Caption","Sequence")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Receiver","Caption","Receiver No.")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","POLine","Caption","PO Line")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Quantity","Caption","Quantity")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","UnitCost","Caption","Unit Cost")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Batch","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PostDate","MinWidth","90")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Line","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Amount","MinWidth","100")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","ChargeDate","MinWidth","100")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Job","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Suffix","MinWidth","60")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Seq","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Receiver","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PO","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","POLine","MinWidth","70")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Quantity","MinWidth","100")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","UnitCost","MinWidth","100")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","PostDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","ChargeDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Amount","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","Quantity","DisplayCustomNumeric","##,###,##0.00000")
+Gui.F_Recon.GsGCAP.SetColumnProperty("gvAP","UnitCost","DisplayCustomNumeric","##,###,##0.00")
+
+Gui.F_Recon.GsGCAP.AddSummaryItem("gvAP","Amount","APSUM","SUM","","","##,###,##0.00")
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.GsGCAP.Visible(True)
+Program.Sub.RefreshAP.End
+
+Program.Sub.RefreshLaborBatch.Start
+V.Local.dPostDate.Declare(Date)
+V.Local.i1.Declare
+V.Local.i2.Declare
+V.Local.iRem.Declare
+V.Local.sAccountCOS.Declare
+V.Local.sSQL.Declare
+
+Gui.F_Recon.GsGCLabor.Visible(False)
+Gui.F_Recon.lblProgress.Visible(True)
+Gui.F_Recon.progressBar1.Visible(True)
+
+F.Intrinsic.Control.If(V.DataTable.dtLBatch.Exists,=,True)
+	F.Intrinsic.Control.If(V.DataView.dtLBatch!dvLBatch.Exists,=,True)
+		F.Data.DataView.Close("dtLBatch","dvLBatch")
+	F.Intrinsic.Control.EndIf
+	F.Data.DataTable.Close("dtLBatch")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("select (left(lbr_batch_no,5)) as Batch, sum(amount_labor) as Job_Labor, sum(amt_overhead) as Job_OH from v_job_detail where lbr_batch_no <> '' and left(lbr_batch_no,1) <> 'I' and charge_date between '{0}' and '{1}' and (job <> '{2}' or suffix <> '{3}') and ucase(left(job,1)) <> 'Z' group by lbr_batch_no",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Global.sJobIndirect.Trim,V.Global.sSuffixIndirect.Trim,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtLBatch","conx",V.Local.sSQL,True)
+F.Data.DataTable.AddExpressionColumn("dtLBatch","Job_Total","Float","Job_Labor+Job_OH")
+F.Data.DataTable.AddColumn("dtLBatch","PostDate","Date","01-01-1900")
+F.Data.DataTable.AddColumn("dtLBatch","GL_Labor","Float",0)
+F.Data.DataTable.AddColumn("dtLBatch","GL_OH","Float",0)
+F.Data.DataTable.AddExpressionColumn("dtLBatch","GL_Total","Float","GL_Labor+GL_OH")
+
+Gui.F_Recon.lblProgress.Caption("Loading all Labor/OH batches within the period")
+Gui.F_Recon.progressBar1.Value(25)
+'Retrieve labor batch amount summary from job detail and GL detail
+'Process every 10 GL accounts from dtCOS if there are more than 10 GL accounts
+F.Intrinsic.Control.For(V.Local.i1,0,V.DataTable.dtCOS.RowCount--,1)
+	F.Intrinsic.Math.Add(V.Local.i1,1,V.Local.i2)
+	F.Intrinsic.Control.If(V.DataTable.dtCOS.RowCount,>,9)
+		F.Intrinsic.Math.Mod(V.Local.i2,9,V.Local.iRem)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.Math.Mod(V.Local.i2,V.DataTable.dtCOS.RowCount,V.Local.iRem)
+	F.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.If(V.Local.sAccountCOS.Trim,=,"")
+		F.Intrinsic.String.Build("({0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtCOS(V.Local.i1).Account!FieldValTrim,V.Local.sAccountCOS)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{2} or {0} = '{1}'",V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtCOS(V.Local.i1).Account!FieldValTrim,V.Local.sAccountCOS,V.Local.sAccountCOS)
+	F.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.If(V.Local.iRem,=,0)
+		F.Intrinsic.String.Concat(V.Local.sAccountCOS,")",V.Local.sAccountCOS)
+		F.Intrinsic.String.Build("select {2} as Batch, {0} as PostDate, {1} as Amount, {4} as Description from v_gl_detail where {0} between '{5}' and '{6}' and {7} and {2} like 'L%'",V.DataTable.dtGLDetail(V.Global.iVersion).PostDate!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Amount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Batch!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).GLAccount!FieldValTrim,V.DataTable.dtGLDetail(V.Global.iVersion).Description!FieldValTrim,V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sAccountCOS,V.Local.sSQL)
+		F.Intrinsic.Control.If(V.DataTable.dtGL.Exists,=,False)
+			F.Data.DataTable.CreateFromSQL("dtGL","conx",V.Local.sSQL)
+		F.Intrinsic.Control.Else
+			F.Data.DataTable.CreateFromSQL("dtGLTemp","conx",V.Local.sSQL)
+			F.Data.DataTable.Merge("dtGLTemp","dtGL",True,1)
+			F.Data.DataTable.Close("dtGLTemp")
+		F.Intrinsic.Control.EndIf
+		V.Local.sAccountCOS.Set("")
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.i1)
+
+Gui.F_Recon.lblProgress.Caption("Retrieve GL detail data on labor/ OH batch")
+Gui.F_Recon.progressBar1.Value(50)
+
+F.Intrinsic.Control.If(V.DataTable.dtGL.Exists,=,True)
+	F.Intrinsic.Date.ConvertDString("19000101","YYYYMmDd",V.Local.dPostDate)
+	F.Data.Dictionary.CreateFromDataTable("dicPost","dtGL","Batch","PostDate")
+	F.Data.Dictionary.SetDefaultReturn("dicPost",V.Local.dPostDate)
+	F.Data.DataTable.FillFromDictionary("dtLBatch","dicPost","Batch","PostDate")
+	F.Data.Dictionary.Close("dicPost")
+	
+	F.Data.DataView.Create("dtGL","dvLabor",22,"Description LIKE '%Labor%'","")
+	F.Data.Dictionary.CreateFromDataView("dicLabor","dtGL","dvLabor","Batch","Amount")
+	F.Data.Dictionary.SetDefaultReturn("dicLabor",0)
+	F.Data.DataTable.FillFromDictionary("dtLBatch","dicLabor","Batch","GL_Labor")
+	F.Data.Dictionary.Close("dicLabor")
+	F.Data.DataView.Close("dtGL","dvLabor")
+	
+	F.Data.DataView.Create("dtGL","dvOH",22,"Description LIKE '%Overhead%'","")
+	F.Data.Dictionary.CreateFromDataView("dicOH","dtGL","dvOH","Batch","Amount")
+	F.Data.Dictionary.SetDefaultReturn("dicOH",0)
+	F.Data.DataTable.FillFromDictionary("dtLBatch","dicOH","Batch","GL_OH")
+	F.Data.Dictionary.Close("dicOH")
+	F.Data.DataView.Close("dtGL","dvOH")
+	
+	F.Data.DataTable.Close("dtGL")
+F.Intrinsic.Control.EndIf
+
+'Get the labor amount for a distinct job-suffix number from job_detail to update dtRecon
+F.Intrinsic.String.Build("select job as wo, suffix, sum(amount_labor) as Labor, sum(amt_overhead) as OH from v_job_detail where charge_date between '{0}' and '{1}' and lbr_batch_no <> '' group by job, suffix",V.Global.dBegDate.PervasiveDate,V.Global.dEndDate.PervasiveDate,V.Local.sSQL)
+F.Data.DataTable.CreateFromSQL("dtW","conx",V.Local.sSQL)
+F.Data.DataTable.AddExpressionColumn("dtW","Job","String","SUBSTRING(wo,1,6)+'-'+SUBSTRING(suffix,1,3)")
+F.Data.DataTable.AddExpressionColumn("dtW","Amount","Float","Labor+OH")
+F.Data.Dictionary.CreateFromDataTable("dicLabor","dtW","Job","Amount")
+F.Data.DataTable.Close("dtW")
+F.Data.Dictionary.SetDefaultReturn("dicLabor",0)
+F.Data.DataTable.FillFromDictionary("dtRecon","dicLabor","WO","LaborOH")
+F.Data.Dictionary.Close("dicLabor")
+
+Gui.F_Recon.lblProgress.Caption("Update labor/ OH batch data with GL detail data")
+Gui.F_Recon.progressBar1.Value(75)
+
+F.Data.DataView.Create("dtLBatch","dvLBatch")
+Gui.F_Recon.GsGCLabor.AddGridviewFromDataview("gvLaborOH","dtLBatch","dvLBatch")
+Gui.F_Recon.GsGCLabor.MainView("gvLaborOH")
+
+Gui.F_Recon.lblProgress.Caption("Setting up labor/ OH grid")
+Gui.F_Recon.progressBar1.Value(95)
+
+Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","ShowGroupPanel",True)
+Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","AllowSort",True)
+Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","AllowFilter",True)
+Gui.F_Recon.GsGCLabor.SetGridviewProperty("gvLaborOH","Enableappearanceevenrow",True)
+
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Batch","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","PostDate","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Labor","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_OH","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Total","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Labor","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_OH","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Total","HeaderHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Batch","CellHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","PostDate","CellHAlignment","Center")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Batch","Caption","Batch No.")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","PostDate","Caption","Post Date")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Labor","Caption","Job Labor")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_OH","Caption","Job Overhead")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Total","Caption","Job Detail Total")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Labor","Caption","GL Labor")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_OH","Caption","GL Overhead")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Total","Caption","GL Detail Total")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","PostDate","DisplayCustomDatetime","d")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Labor","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_OH","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Total","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Labor","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_OH","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Total","DisplayCustomNumeric","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Batch","MinWidth","90")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","PostDate","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Labor","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_OH","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Total","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Labor","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_OH","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Total","MinWidth","100")
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","Job_Total","CellBackColor",V.Color.LtGray)
+Gui.F_Recon.GsGCLabor.SetColumnProperty("gvLaborOH","GL_Total","CellBackColor",V.Color.LtGray)
+
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","Job_Labor","JLSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","Job_OH","JOSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","Job_Total","JTSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","GL_Labor","GLSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","GL_OH","GOSUM","SUM","","","##,###,##0.00")
+Gui.F_Recon.GsGCLabor.AddSummaryItem("gvLaborOH","GL_Total","GTSUM","SUM","","","##,###,##0.00")
+
+Gui.F_Recon.lblProgress.Visible(False)
+Gui.F_Recon.progressBar1.Visible(False)
+Gui.F_Recon.GsGCLabor.Visible(True)
+Program.Sub.RefreshLaborBatch.End
+
+Program.Sub.Comments.Start
+${$0$}$WIP Reconciliation Dashboard$}$MHERTANTO$}$20/12/2017 2:30:42 PM$}$False
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$This dashboard reconciles changes in WIP amount of work orders between 2 accounting period. The reconcilation compares net change of what is stored in job detail and general ledger.
+${$5$}$2.0.0.0$}$2
+${$6$}$triley$}$20231206075536141$}$iK6nerqp9nur1h1iSBfRKBBz1ENCgYv6K3yIG8Qsy8fu659YdIkOzqqDZ/WHgr/1fkXswoNVNCk=
+Program.Sub.Comments.End
